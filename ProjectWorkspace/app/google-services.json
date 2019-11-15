@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "39689917510",
+    "firebase_url": "https://spotquiz-dcaa7.firebaseio.com",
+    "project_id": "spotquiz-dcaa7",
+    "storage_bucket": "spotquiz-dcaa7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39689917510:android:f305e811c64e6a28832647",
+        "android_client_info": {
+          "package_name": "com.example.spotquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39689917510-s88jr43tn6oaimorjfroi85scria90n4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5obTFpPhzhG6YZdra1uWxNP3pYXN9JGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39689917510-s88jr43tn6oaimorjfroi85scria90n4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
