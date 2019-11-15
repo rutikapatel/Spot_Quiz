@@ -9,8 +9,6 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.net.ContentHandlerFactory;
-
 public class MainActivity extends AppCompatActivity {
 
     // Splash screen timer
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+            Intent i = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(i);
         //close
 
