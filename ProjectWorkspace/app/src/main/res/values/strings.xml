@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SpotQuiz</string>
     <string name="splashScreen">SpotQUIZ</string>
+    <string name="student_home">Student Home</string>
+    <string name="take_quiz">take quiz</string>
 
 </resources>

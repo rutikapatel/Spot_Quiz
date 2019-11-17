@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "39689917510-hg34drad9tjk5ejovc3v7vosgtdgh2ft.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spotquiz",
+            "certificate_hash": "dff7313bd0e7be7ed1a093e56d63f95a9ef7826a"
+          }
+        },
+        {
           "client_id": "39689917510-s88jr43tn6oaimorjfroi85scria90n4.apps.googleusercontent.com",
           "client_type": 3
         }
