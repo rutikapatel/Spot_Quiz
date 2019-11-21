@@ -1,4 +1,4 @@
-package com.example.spotquiz;
+package com.example.spotquiz.pojo;
 
 public class Users {
     String email;

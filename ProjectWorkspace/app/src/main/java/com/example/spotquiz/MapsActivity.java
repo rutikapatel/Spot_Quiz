@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -18,8 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -77,48 +80,50 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
 
-
-
+    private Button selectLocation;
+    private QuizLocation quizLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        quizLocation = new QuizLocation();
+
+        selectLocation = findViewById(R.id.btnSelectLocation);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //
-        // PASTE THE LINES BELOW THIS COMMENT
-        //
-
         // Set up the action toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Set up the views
+       // Set up the views
         lstPlaces = (ListView) findViewById(R.id.listPlaces);
-
         // Initialize the Places client
         String apiKey = getString(R.string.google_maps_key);
         Places.initialize(getApplicationContext(), apiKey);
         mPlacesClient = Places.createClient(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        //Selecct location
+        selectLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),QuizCreationActivity.class);
+                intent.putExtra("location",quizLocation);
+                startActivity(intent);
+                finish();
+            }
+        });
 
-        // Initialize the AutocompleteSupportFragment.
+
+        //Autosuggestion
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-// Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
-
-// Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng()
                         , DEFAULT_ZOOM));
                 mMap.addMarker(new MarkerOptions()
@@ -126,12 +131,15 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                         .position(place.getLatLng())
                         );
 
+                quizLocation.setName(place.getName());
+                quizLocation.setLatitude(place.getLatLng().latitude);
+                quizLocation.setLatitude(place.getLatLng().longitude);
+
                 Log.d(TAG, "Place: " + place.getName() + ", " + place.getId() + ", "+ place.getLatLng());
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.d(TAG, "An error occurred: " + status);
             }
         });
