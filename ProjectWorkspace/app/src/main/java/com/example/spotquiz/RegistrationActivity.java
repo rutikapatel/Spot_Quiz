@@ -22,12 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText name,email, password,dalId;
-RadioButton student,professor;
+    private EditText name, email, password, dalId;
+    RadioButton student, professor;
     Button register;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-    boolean flag;
+    boolean studnt, prof;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,25 +48,39 @@ RadioButton student,professor;
             @Override
             public void onClick(View v) {
 
-                if(name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
+                if (name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
                         || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
-                        || !(student.isChecked() || professor.isChecked()))
-                {
+                        || !(student.isChecked() || professor.isChecked())) {
 
-                    flag =true;
+
                     name.setError("Please enter your name");
                     email.setError("Please enter your E-Mail ID");
                     password.setError("Please enter the password");
                     dalId.setError("Please enter your dalhousie ID");
                     student.setError("Please select student if applicable");
                     professor.setError("Please select professor if applicable");
-                }
+                } else {
+                    if (student.isChecked() == true) {
+                        studnt = student.isChecked();
+                        prof = professor.isChecked();
+                        System.out.println("student button" + studnt);
+                        System.out.println("prof button" + prof);
+                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString(), studnt, prof);
+                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                        finish();
 
-                else {
+                    } else if (professor.isChecked() == true) {
 
-                    firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString());
-                    startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
-                    finish();
+                        studnt = student.isChecked();
+                        prof = professor.isChecked();
+                        System.out.println("student button" + studnt);
+                        System.out.println("prof button" + prof);
+                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString(), studnt, prof);
+                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                        finish();
+
+                    }
+
                 }
             }
         });
@@ -73,7 +88,7 @@ RadioButton student,professor;
 
     }
 
-    protected  void firebaseAuthInsertion(final String mail,String password,final String dalId,final String name){
+    protected void firebaseAuthInsertion(final String mail, String password, final String dalId, final String name, final boolean studnt, boolean prof) {
         mAuth.createUserWithEmailAndPassword(mail, password)
                 .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -82,13 +97,14 @@ RadioButton student,professor;
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userProfileCreation(name,mail,dalId);
-                            Toast.makeText(RegistrationActivity.this,"Registration Success",
+                            userProfileCreation(name, mail, dalId, studnt, prof);
+                            Toast.makeText(RegistrationActivity.this, "Registration Success",
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            System.out.println( task.getException());
+                           Toast.makeText(RegistrationActivity.this,"There is an error" +task.getException(),Toast.LENGTH_SHORT).show();
+                            System.out.println(task.getException());
                         }
 
                         // ...
@@ -96,11 +112,12 @@ RadioButton student,professor;
                 });
     }
 
-    protected void userProfileCreation(String name,String email,String dalId){
+    protected void userProfileCreation(String name, String email, String dalId, final boolean studnt, final boolean prof) {
         Users user = new Users();
         user.setEmail(email);
         user.setName(name);
-        user.setProfessor(true);
+        user.setStudent(studnt);
+        user.setProfessor(prof);
         user.setDalId(dalId);
         mDatabase.child("users").child(dalId).setValue(user);
     }
