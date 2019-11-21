@@ -3,6 +3,7 @@ package com.example.spotquiz;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -26,7 +27,7 @@ RadioButton student,professor;
     Button register;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
-
+    boolean flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,13 +42,31 @@ RadioButton student,professor;
         professor = findViewById(R.id.professor);
         register = findViewById(R.id.btnregister);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if(name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
+                        || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
+                        || !(student.isChecked() || professor.isChecked()))
+                {
 
-                firebaseAuthInsertion(email.getText().toString(), password.getText().toString(),dalId.getText().toString(),name.getText().toString());
+                    flag =true;
+                    name.setError("Please enter your name");
+                    email.setError("Please enter your E-Mail ID");
+                    password.setError("Please enter the password");
+                    dalId.setError("Please enter your dalhousie ID");
+                    student.setError("Please select student if applicable");
+                    professor.setError("Please select professor if applicable");
+                }
 
+                else {
+
+                    firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString());
+                    startActivity(new Intent(RegistrationActivity.this,LoginActivity.class));
+                    finish();
+                }
             }
         });
 
@@ -70,8 +89,6 @@ RadioButton student,professor;
                         } else {
                             // If sign in fails, display a message to the user.
                             System.out.println( task.getException());
-
-                            // updateUI(null);
                         }
 
                         // ...
