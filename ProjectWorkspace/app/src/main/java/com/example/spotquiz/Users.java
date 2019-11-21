@@ -1,6 +1,10 @@
 package com.example.spotquiz;
 
 public class Users {
+    String email;
+    String name;
+    String dalId;
+    Boolean professor,student;
     public String getEmail() {
         return email;
     }
@@ -33,8 +37,7 @@ public class Users {
         this.student = student;
     }
 
-    String email;
-    String name;
+
 
     public String getDalId() {
         return dalId;
@@ -44,6 +47,5 @@ public class Users {
         this.dalId = dalId;
     }
 
-    String dalId;
-    Boolean professor,student;
+
 }
