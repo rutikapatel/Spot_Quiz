@@ -23,7 +23,7 @@
             android:id="@+id/btnquiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@+id/textView"
+            
             android:text="@string/take_quiz" />
 
     </LinearLayout>
