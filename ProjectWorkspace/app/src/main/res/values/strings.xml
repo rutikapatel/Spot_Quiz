@@ -4,4 +4,13 @@
     <string name="student_home">Student Home</string>
     <string name="take_quiz">take quiz</string>
 
+
+    <string name="email"> E-Mail </string>
+    <string name ="pwd"> Password </string>
+    <string name ="DalId"> Dalhousie Net ID</string>
+    <string name="regbtn"> REGISTER </string>
+    <string name="name"> Name </string>
+    <string name="StudentRadioBtn">Student</string>
+    <string name="ProfessorRadioBtn">Professor</string>
+
 </resources>

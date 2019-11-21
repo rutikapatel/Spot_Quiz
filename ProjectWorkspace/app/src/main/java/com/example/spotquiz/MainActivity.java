@@ -12,7 +12,7 @@ import android.view.WindowManager;
 public class MainActivity extends AppCompatActivity {
 
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 3000;
+    private static int SPLASH_TIME_OUT = 1500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
 
         setContentView(R.layout.activity_main);
 
