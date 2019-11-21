@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     Button login,register;
@@ -60,9 +62,9 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication Success.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                            Intent i = new Intent(LoginActivity.this, MapsActivity.class);
                             startActivity(i);
-
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
 
