@@ -1,7 +1,23 @@
 <resources>
     <string name="app_name">SpotQuiz</string>
     <string name="splashScreen">SpotQUIZ</string>
-    <string name="no_of_questions_text">No of Questions</string>
+	<string name="student_home">Student Home</string>
+    <string name="take_quiz">take quiz</string>
+
+
+
+
+
+
+
+    <string name="email"> E-Mail </string>
+    <string name ="pwd"> Password </string>
+    <string name ="DalId"> Dalhousie Net ID</string>
+    <string name="regbtn"> REGISTER </string>
+    <string name="name"> Name </string>
+    <string name="StudentRadioBtn">Student</string>
+    <string name="ProfessorRadioBtn">Professor</string>
+	<string name="no_of_questions_text">No of Questions</string>
     <string-array name="no_of_questions">
         <item>5</item>
         <item>10</item>
@@ -29,5 +45,4 @@
       }
    ]}
     </string>
-
 </resources>
