@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     EditText email, password;
-    Button login,register;
+    Button login, register;
     private FirebaseAuth mAuth;
 
     @Override
@@ -38,7 +38,15 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(email.getText().toString(), password.getText().toString());
+
+                if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+
+                    email.setError("Please fill in your email ID");
+                    password.setError("Please fill in your password");
+                } else {
+
+                    login(email.getText().toString(), password.getText().toString());
+                }
             }
         });
 
@@ -52,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    protected void login(String email,String password){
+    protected void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
