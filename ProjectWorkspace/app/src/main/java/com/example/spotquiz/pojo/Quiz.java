@@ -1,8 +1,33 @@
 package com.example.spotquiz.pojo;
 
 public class Quiz {
-String quizName,courseName,noOfQuestions,quizKey;
-QuizLocation quizLocation;
+String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength;
+
+    public String getQuizDate() {
+        return quizDate;
+    }
+
+    public void setQuizDate(String quizDate) {
+        this.quizDate = quizDate;
+    }
+
+    public String getQuizStartTime() {
+        return quizStartTime;
+    }
+
+    public void setQuizStartTime(String quizStartTime) {
+        this.quizStartTime = quizStartTime;
+    }
+
+    public String getQuizLength() {
+        return quizLength;
+    }
+
+    public void setQuizLength(String quizLength) {
+        this.quizLength = quizLength;
+    }
+
+    QuizLocation quizLocation;
 
     public String getQuizName() {
         return quizName;
