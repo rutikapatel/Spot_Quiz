@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    // Initializing UI components
+
     private EditText name, email, password, dalId;
     RadioButton student, professor;
     Button register;
@@ -35,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
         name = findViewById(R.id.personName);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -44,10 +47,11 @@ public class RegistrationActivity extends AppCompatActivity {
         register = findViewById(R.id.btnregister);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //OnClick listener method for register button
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Edittext validation
                 if (name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
                         || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
                         || !(student.isChecked() || professor.isChecked())) {
@@ -59,7 +63,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     dalId.setError("Please enter your dalhousie ID");
                     student.setError("Please select student if applicable");
                     professor.setError("Please select professor if applicable");
+                    register.setVisibility(View.INVISIBLE);
                 } else {
+                    //Registering as student
                     if (student.isChecked() == true) {
                         studnt = student.isChecked();
                         prof = professor.isChecked();
@@ -69,6 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                         finish();
 
+                        //Registering as professor
                     } else if (professor.isChecked() == true) {
 
                         studnt = student.isChecked();
@@ -87,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-
+            //Firebase authentication method
     protected void firebaseAuthInsertion(final String mail, String password, final String dalId, final String name, final boolean studnt, boolean prof) {
         mAuth.createUserWithEmailAndPassword(mail, password)
                 .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
@@ -103,7 +110,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                           Toast.makeText(RegistrationActivity.this,"There is an error" +task.getException(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegistrationActivity.this, "There is an error" + task.getException(), Toast.LENGTH_SHORT).show();
                             System.out.println(task.getException());
                         }
 
@@ -112,6 +119,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
+    //Setting values based on user type
     protected void userProfileCreation(String name, String email, String dalId, final boolean studnt, final boolean prof) {
         Users user = new Users();
         user.setEmail(email);
