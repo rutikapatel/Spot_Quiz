@@ -73,4 +73,25 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/boxquizLocation"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_margin="10dp"
+        android:hint="Quiz Location"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_mpaicon"
+        app:endIconContentDescription="Map"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/quizLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:editable="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>
