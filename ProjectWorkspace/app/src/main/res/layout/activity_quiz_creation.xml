@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:overScrollMode="always"
     tools:context=".QuizCreationActivity">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -12,7 +13,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:hint="Quiz Name" >
 
     <com.google.android.material.textfield.TextInputEditText
@@ -29,7 +30,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:hint="Course Name" >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -44,13 +45,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="No of Questions"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         />
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/noOfQuestions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:entries="@array/no_of_questions"
         android:prompt="@string/no_of_questions_text" />
 
@@ -59,7 +60,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:hint="Quiz Key"
         app:endIconMode="password_toggle">
 
@@ -78,7 +79,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:hint="Quiz Location"
         app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_mpaicon"
@@ -94,4 +95,61 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/boxquizdate"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_margin="2dp"
+        android:hint="Quiz Date"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_calendar"
+        app:endIconContentDescription="Date"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/quizDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:editable="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/boxquizstarttime"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_margin="2dp"
+        android:hint="Quiz Time"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_time"
+        app:endIconContentDescription="Time"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/quizStartTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:editable="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/quizLength"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:entries="@array/no_of_questions"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:text="Create" />
 </LinearLayout>
