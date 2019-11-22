@@ -133,7 +133,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
                 quizLocation.setName(place.getName());
                 quizLocation.setLatitude(place.getLatLng().latitude);
-                quizLocation.setLatitude(place.getLatLng().longitude);
+                quizLocation.setLongitude(place.getLatLng().longitude);
 
                 Log.d(TAG, "Place: " + place.getName() + ", " + place.getId() + ", "+ place.getLatLng());
             }
