@@ -11,12 +11,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.example.spotquiz.pojo.Quiz;
+import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class QuizListActivity extends AppCompatActivity {
     private boolean mLocationPermissionGranted;
@@ -28,6 +37,9 @@ public class QuizListActivity extends AppCompatActivity {
     private static final String TAG = "QuizListActivity";
 
     private EditText location;
+
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +47,8 @@ public class QuizListActivity extends AppCompatActivity {
         location = findViewById(R.id.quizLocation);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocationPermission();
+        mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
+
     }
 
     private void getLocationPermission() {
@@ -91,10 +105,11 @@ public class QuizListActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = task.getResult();
-                            if(mLastKnownLocation!=null){
+                            if (mLastKnownLocation != null) {
                                 Log.d(TAG, "Latitude: " + mLastKnownLocation.getLatitude());
                                 Log.d(TAG, "Longitude: " + mLastKnownLocation.getLongitude());
                                 location.setText(mLastKnownLocation.toString());
+                                getQuiz();
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -104,8 +119,76 @@ public class QuizListActivity extends AppCompatActivity {
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
+
+    private void getQuiz() {
+
+        ArrayList<Quiz> todayQuiz = new ArrayList<>();
+        mDatabase.orderByChild("quizDate").equalTo("2019-10-21").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childData : dataSnapshot.getChildren()) {
+                    System.out.println("keys" + childData.getKey());
+
+                    QuizLocation quizLocation = new QuizLocation(childData.child("quizLocation").child("name").getValue().toString(),
+                            Double.parseDouble(childData.child("quizLocation").child("longitude").getValue().toString()),
+                            Double.parseDouble(childData.child("quizLocation").child("latitude").getValue().toString())
+                            );
+
+                    Quiz q = new Quiz(childData.child("quizName").getValue().toString(),
+                            childData.child("courseName").getValue().toString(),
+                            childData.child("noOfQuestions").getValue().toString(),
+                            childData.child("quizKey").getValue().toString(),
+                            childData.child("quizDate").getValue().toString(),
+                            childData.child("quizStartTime").getValue().toString(),
+                            childData.child("quizLength").getValue().toString(),
+                            quizLocation);
+                    System.out.println("pish" + q.getQuizName());
+                    todayQuiz.add(q);
+                }
+                checkProximity(todayQuiz);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    void checkProximity(ArrayList<Quiz> todayQuiz) {
+
+        Location cur = new Location("");
+        /*double lat =44.64068109999999;
+        double lon =-63.5783336;*/
+
+        cur.setLatitude(mLastKnownLocation.getLatitude());
+        cur.setLongitude(mLastKnownLocation.getLongitude());
+
+       /* lat =44.6394053;
+        lon =-63.5837703;*/
+
+
+        ArrayList<Quiz> availableQuiz = new ArrayList<>();
+        availableQuiz.addAll(todayQuiz);
+        for (Quiz q : todayQuiz) {
+            Location des = new Location("");
+            des.setLatitude(q.getQuizLocation().getLatitude());
+            des.setLongitude(q.getQuizLocation().getLongitude());
+            float dist = cur.distanceTo(des);
+            System.out.println("distance" + dist+"quiz anme"+ q.getQuizLocation().getName()+"   lat  "+des.getLatitude()+ "  lon  "+des.getLongitude());
+            if (dist > 200.00) {
+                availableQuiz.remove(q);
+            }
+        }
+        System.out.println("available quiz"+availableQuiz.get(0)) ;
+
+    }
+
 }
