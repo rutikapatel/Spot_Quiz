@@ -6,6 +6,15 @@ public class QuizLocation implements Serializable {
     String name;
     Double longitude;
 
+    public QuizLocation() {
+    }
+
+    public QuizLocation(String name, Double longitude, Double latitude) {
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
     public Double getLongitude() {
         return longitude;
     }

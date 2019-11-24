@@ -61,8 +61,8 @@ public class StudentHomeActivity extends AppCompatActivity {
         btnquiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(StudentHomeActivity.this, LoginActivity.class));
+
+                startActivity(new Intent(StudentHomeActivity.this, QuizListActivity.class));
             }
         });
     }

@@ -70,9 +70,20 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication Success.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent i = new Intent(LoginActivity.this, QuizCreationActivity.class);
-                            startActivity(i);
-                            finish();
+
+                            if(email.equalsIgnoreCase("student@dal.ca")) {
+                                Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else if(email.equalsIgnoreCase("prof@dal.ca")){
+                                Intent i = new Intent(LoginActivity.this, ProfessorHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
 
