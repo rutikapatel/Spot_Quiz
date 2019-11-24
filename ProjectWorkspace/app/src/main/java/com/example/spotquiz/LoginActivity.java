@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(i);
                                 finish();
                             }else{
-                                Intent i = new Intent(LoginActivity.this, QuizListActivity.class);
+                                Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
                                 startActivity(i);
                                 finish();
                             }
