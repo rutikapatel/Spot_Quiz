@@ -38,7 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        name = findViewById(R.id.personName);
+        name = findViewById(R.id.name);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         dalId = findViewById(R.id.dalId);
