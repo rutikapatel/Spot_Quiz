@@ -96,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Edittext validation
                 if (name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
                         || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
-                        || !(student.isChecked() || professor.isChecked())) {
+                        || !(student.isChecked() || professor.isChecked()) || imgView.getDrawable() == null) {
 
 
                     name.setError("Please enter your name");
@@ -105,7 +105,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     dalId.setError("Please enter your dalhousie ID");
                     student.setError("Please select student if applicable");
                     professor.setError("Please select professor if applicable");
+                    Toast.makeText(RegistrationActivity.this, "Select an profile image", Toast.LENGTH_SHORT).show();
                     register.setVisibility(View.INVISIBLE);
+
                 } else {
                     //Registering as student
                     if (student.isChecked() == true) {
@@ -113,7 +115,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
                         System.out.println("prof button" + prof);
-                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString(), studnt, prof);
+                        System.out.println("stud photo string is " + photo);
+                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
+                                              name.getText().toString(), studnt, prof, photo);
                         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                         finish();
 
@@ -124,7 +128,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
                         System.out.println("prof button" + prof);
-                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(), name.getText().toString(), studnt, prof);
+                        System.out.println("prof photo string is " + photo);
+                        firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
+                                              name.getText().toString(), studnt, prof,photo);
                         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                         finish();
 
@@ -243,7 +249,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     //Firebase authentication method
-    protected void firebaseAuthInsertion(final String mail, String password, final String dalId, final String name, final boolean studnt, boolean prof) {
+    protected void firebaseAuthInsertion(final String mail, String password, final String dalId,
+                                         final String name, final boolean studnt, boolean prof, final String photo) {
         mAuth.createUserWithEmailAndPassword(mail, password)
                 .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -252,14 +259,14 @@ public class RegistrationActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userProfileCreation(name, mail, dalId, studnt, prof);
+                            userProfileCreation(name, mail, dalId, studnt, prof, photo);
                             Toast.makeText(RegistrationActivity.this, "Registration Success",
-                                    Toast.LENGTH_SHORT).show();
+                                    Toast.LENGTH_LONG).show();
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(RegistrationActivity.this, "There is an error" + task.getException(), Toast.LENGTH_SHORT).show();
-                            System.out.println(task.getException());
+                            Toast.makeText(RegistrationActivity.this, "There is an error" + task.getException(), Toast.LENGTH_LONG).show();
+                            System.out.println("FIREBASE EXCEPTION " +task.getException());
                         }
 
                         // ...
@@ -269,13 +276,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //Setting values based on user type
     protected void userProfileCreation(String name, String email, String dalId,
-                                       final boolean studnt, final boolean prof) {
+                                       final boolean studnt, final boolean prof, String profilePhoto) {
         Users user = new Users();
         user.setEmail(email);
         user.setName(name);
         user.setStudent(studnt);
         user.setProfessor(prof);
         user.setDalId(dalId);
+        user.setProfilePhoto(profilePhoto);
+        System.out.println("the BASE64String is" +profilePhoto);
         mDatabase.child("users").child(dalId).setValue(user);
     }
 }

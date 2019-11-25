@@ -4,7 +4,10 @@ public class Users {
     String email;
     String name;
     String dalId;
-    Boolean professor,student;
+    Boolean professor, student;
+    String profilePhoto;
+
+
     public String getEmail() {
         return email;
     }
@@ -38,13 +41,20 @@ public class Users {
     }
 
 
-
     public String getDalId() {
         return dalId;
     }
 
     public void setDalId(String dalId) {
         this.dalId = dalId;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
 
