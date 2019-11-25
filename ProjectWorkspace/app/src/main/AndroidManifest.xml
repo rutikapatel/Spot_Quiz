@@ -8,7 +8,13 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--  Permission to access storage -->
+    <uses-permission android:name="android.media.action.IMAGE_CAPTURE_SECURE"/>
+    <uses-permission android:name="android.permission.action.IMAGE_CAPTURE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -44,7 +50,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="true"/>
+
         <activity android:name=".LoginActivity" />
     </application>
 
