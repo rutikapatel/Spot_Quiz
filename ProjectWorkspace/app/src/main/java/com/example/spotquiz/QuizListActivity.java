@@ -9,8 +9,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.spotquiz.adapters.QuizListCardAdapter;
 import com.example.spotquiz.pojo.Quiz;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuizListActivity extends AppCompatActivity {
     private boolean mLocationPermissionGranted;
@@ -36,18 +41,25 @@ public class QuizListActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizListActivity";
 
-    private EditText location;
+    private TextView location;
 
     private DatabaseReference mDatabase;
+    private ListView quizList;
+
+    private QuizListCardAdapter quizCard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_list);
         location = findViewById(R.id.quizLocation);
+        quizList = findViewById(R.id.quizList);
+        quizList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocationPermission();
         mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
+
 
     }
 
@@ -165,15 +177,9 @@ public class QuizListActivity extends AppCompatActivity {
     void checkProximity(ArrayList<Quiz> todayQuiz) {
 
         Location cur = new Location("");
-        /*double lat =44.64068109999999;
-        double lon =-63.5783336;*/
 
         cur.setLatitude(mLastKnownLocation.getLatitude());
         cur.setLongitude(mLastKnownLocation.getLongitude());
-
-       /* lat =44.6394053;
-        lon =-63.5837703;*/
-
 
         ArrayList<Quiz> availableQuiz = new ArrayList<>();
         availableQuiz.addAll(todayQuiz);
@@ -188,6 +194,15 @@ public class QuizListActivity extends AppCompatActivity {
             }
         }
         System.out.println("available quiz"+availableQuiz.get(0)) ;
+
+        ArrayList<String> dummy = new ArrayList<>();
+
+        dummy.add("hari");
+
+        quizCard = new QuizListCardAdapter(this,availableQuiz);
+
+       //1 ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.activity_quiz_list,dummy);
+        quizList.setAdapter(quizCard);
 
     }
 
