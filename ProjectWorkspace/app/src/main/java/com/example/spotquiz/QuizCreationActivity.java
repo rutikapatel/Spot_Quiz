@@ -32,6 +32,7 @@ public class QuizCreationActivity extends AppCompatActivity {
 
     private QuizLocation selectedLocation;
     private Button create;
+    int valid = 0;
 
     private Calendar myCalendar = Calendar.getInstance();
     private int day = myCalendar.get(Calendar.DAY_OF_MONTH);
@@ -92,13 +93,36 @@ public class QuizCreationActivity extends AppCompatActivity {
         }
 
 
+
+
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createQuiz();
+                valid = 0;
+
+                if (quizName.getText().toString().isEmpty()) {
+                    quizName.setError("Name should not be empty");
+                    valid = 1; }
+                if (course.getText().toString().isEmpty()) {
+                    course.setError("Course should not be empty");
+                    valid = 1; }
+                if (quizKey.getText().toString().isEmpty()) {
+                    quizKey.setError("Key should not be empty");
+                    valid = 1; }
+                if (quizLocation.getText().toString().isEmpty()) {
+                    quizLocation.setError("Location should not be empty");
+                    valid = 1; }
+                if (quizDate.getText().toString().isEmpty()) {
+                    quizDate.setError("Date should not be empty");
+                    valid = 1; }
+                if (quizTime.getText().toString().isEmpty()) {
+                    quizTime.setError("Time should not be empty");
+                    valid = 1; }
+                if(valid == 0){  createQuiz(); }
             }
         });
     }
+
 
     void createQuiz(){
         Quiz quiz = new Quiz();
