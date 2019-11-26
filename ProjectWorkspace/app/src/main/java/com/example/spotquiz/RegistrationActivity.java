@@ -18,8 +18,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +58,13 @@ public class RegistrationActivity extends AppCompatActivity {
     static int galCode = 1;
     String photo;
     Uri selectedImage;
+    private static final String LOG_TAG = "RegisterAct";
+
+
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    // [END declare_auth_listener]
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,26 +124,20 @@ public class RegistrationActivity extends AppCompatActivity {
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
                         System.out.println("prof button" + prof);
-                        System.out.println("stud photo string is " + photo);
-                        System.out.println("imageview" + imgView.getDrawable());
+                        //    System.out.println("stud photo string is " + photo);
+                        //   System.out.println("imageview" + imgView.getDrawable());
                         firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
                                 name.getText().toString(), studnt, prof, photo);
-                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-                        finish();
-
-                        //Registering as professor
-                    } else if (professor.isChecked() == true) {
+                    }
+                    //Registering as professor
+                    else if (professor.isChecked() == true) {
 
                         studnt = student.isChecked();
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
                         System.out.println("prof button" + prof);
-                        System.out.println("prof photo string is " + photo);
                         firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
                                 name.getText().toString(), studnt, prof, photo);
-                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-                        finish();
-
                     }
 
                 }
@@ -143,7 +146,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
-
 
     public void imageSelect(Context context) {
         final CharSequence[] opt = {"Take Photo", "Choose from Gallery", "Cancel"};
@@ -169,11 +171,6 @@ public class RegistrationActivity extends AppCompatActivity {
         });
         builder.show();
 
-        //Allow user to pick image from gallery
-
-  /*      Intent galIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galIntent.setType("image/*");
-        startActivityForResult(galIntent,REQCODE);*/
     }
 
     @Override
@@ -219,7 +216,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         byte[] picArray = outstream.toByteArray();
 
-        System.out.println("base64 string is" + Base64.encodeToString(picArray, Base64.URL_SAFE));
+        // System.out.println("base64 string is" + Base64.encodeToString(picArray, Base64.URL_SAFE));
         return Base64.encodeToString(picArray, Base64.URL_SAFE);
 
 
@@ -249,6 +246,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+
     //Firebase authentication method
     protected void firebaseAuthInsertion(final String mail, String password, final String dalId,
                                          final String name, final boolean studnt, boolean prof, final String photo) {
@@ -259,15 +257,19 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             System.out.println("success");
+                            //  Log.d(LOG_TAG,"TAG",+ task.isSuccessful());
                             FirebaseUser user = mAuth.getCurrentUser();
                             userProfileCreation(name, mail, dalId, studnt, prof, photo);
                             Toast.makeText(RegistrationActivity.this, "Registration Success",
                                     Toast.LENGTH_LONG).show();
+                            System.out.println("Registration  is successful");
+
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(RegistrationActivity.this, "There is an error" + task.getException(), Toast.LENGTH_LONG).show();
                             System.out.println("FIREBASE EXCEPTION " + task.getException());
+                            System.out.println("Else condition");
                         }
 
                         // ...
@@ -285,7 +287,8 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setProfessor(prof);
         user.setDalId(dalId);
         user.setProfilePhoto(profilePhoto);
-        System.out.println("the BASE64String is" + profilePhoto);
+        //  System.out.println("the BASE64String is" + profilePhoto);
         mDatabase.child("users").child(dalId).setValue(user);
+        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
     }
 }

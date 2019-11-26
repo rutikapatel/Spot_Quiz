@@ -49,7 +49,9 @@
         android:layout_height="65dp"
         android:layout_below="@id/lblName"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:hint="@string/DalId">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +59,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lblDalId"
-            android:inputType="textPersonName" />
+            android:digits="abcdefghijklmnopqrstuvwxyz0123456789"
+            android:maxLength="8"
+            android:inputType="text" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +72,7 @@
         android:layout_height="50dp"
         android:layout_below="@id/lblDalId"
         android:layout_alignEnd="@id/lblDalId"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
 
         <com.google.android.material.radiobutton.MaterialRadioButton
@@ -76,16 +80,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="50dp"
             android:checked="false"
             android:text="@string/StudentRadioBtn" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/professor"
-            android:layout_width="135dp"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:layout_marginEnd="325dp"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="25dp"
             android:checked="false"
             android:text="@string/ProfessorRadioBtn" />
 
@@ -99,7 +105,9 @@
         android:layout_height="65dp"
         android:layout_below="@+id/radioBtnGrp"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:hint="@string/email"
         android:labelFor="@+id/lblEmail">
 
@@ -121,7 +129,9 @@
         android:layout_height="65dp"
         android:layout_below="@id/lblEmail"
         android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:hint="@string/pwd"
         app:endIconMode="password_toggle">
 
@@ -143,7 +153,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lblPassword"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:padding="5dp"
         android:text="@string/regbtn" />
