@@ -106,7 +106,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     student.setError("Please select student if applicable");
                     professor.setError("Please select professor if applicable");
                     Toast.makeText(RegistrationActivity.this, "Select an profile image", Toast.LENGTH_SHORT).show();
-                    register.setVisibility(View.INVISIBLE);
+
 
                 } else {
                     //Registering as student
@@ -116,8 +116,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         System.out.println("student button" + studnt);
                         System.out.println("prof button" + prof);
                         System.out.println("stud photo string is " + photo);
+                        System.out.println("imageview" + imgView.getDrawable());
                         firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
-                                              name.getText().toString(), studnt, prof, photo);
+                                name.getText().toString(), studnt, prof, photo);
                         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                         finish();
 
@@ -130,7 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         System.out.println("prof button" + prof);
                         System.out.println("prof photo string is " + photo);
                         firebaseAuthInsertion(email.getText().toString(), password.getText().toString(), dalId.getText().toString(),
-                                              name.getText().toString(), studnt, prof,photo);
+                                name.getText().toString(), studnt, prof, photo);
                         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                         finish();
 
@@ -266,7 +267,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(RegistrationActivity.this, "There is an error" + task.getException(), Toast.LENGTH_LONG).show();
-                            System.out.println("FIREBASE EXCEPTION " +task.getException());
+                            System.out.println("FIREBASE EXCEPTION " + task.getException());
                         }
 
                         // ...
@@ -284,7 +285,7 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setProfessor(prof);
         user.setDalId(dalId);
         user.setProfilePhoto(profilePhoto);
-        System.out.println("the BASE64String is" +profilePhoto);
+        System.out.println("the BASE64String is" + profilePhoto);
         mDatabase.child("users").child(dalId).setValue(user);
     }
 }
