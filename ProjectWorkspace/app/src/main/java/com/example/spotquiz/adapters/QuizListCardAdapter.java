@@ -1,6 +1,7 @@
 package com.example.spotquiz.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+
+import com.example.spotquiz.QuizConfirmationActivity;
+import com.example.spotquiz.QuizCreationActivity;
 import com.example.spotquiz.R;
 import com.example.spotquiz.pojo.Quiz;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+
 
 //Card adapter to create cards
 public class QuizListCardAdapter extends BaseAdapter {
@@ -63,7 +72,9 @@ public class QuizListCardAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 System.out.println("clicked");
-
+                Intent intent = new Intent(context, QuizConfirmationActivity.class);
+                intent.putExtra("quiz",q);
+                context.startActivity(intent);
             }
         });
         return convertView;

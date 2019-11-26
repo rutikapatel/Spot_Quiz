@@ -29,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QuizListActivity extends AppCompatActivity {
@@ -138,9 +140,12 @@ public class QuizListActivity extends AppCompatActivity {
 
 
     private void getQuiz() {
-
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String todayDate = sdf.format(today);
         ArrayList<Quiz> todayQuiz = new ArrayList<>();
-        mDatabase.orderByChild("quizDate").equalTo("2019-10-21").addValueEventListener(new ValueEventListener() {
+        System.out.println(todayDate);
+        mDatabase.orderByChild("quizDate").equalTo(todayDate).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot childData : dataSnapshot.getChildren()) {
@@ -193,7 +198,7 @@ public class QuizListActivity extends AppCompatActivity {
                 availableQuiz.remove(q);
             }
         }
-        System.out.println("available quiz"+availableQuiz.get(0)) ;
+//        System.out.println("available quiz"+availableQuiz.get(0)) ;
 
         ArrayList<String> dummy = new ArrayList<>();
 
