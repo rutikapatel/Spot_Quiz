@@ -118,7 +118,7 @@ public class QuizCreationActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                quizDate.setText(year+"-"+monthOfYear+"-"+dayOfMonth);
+                quizDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
             }};
         DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
 

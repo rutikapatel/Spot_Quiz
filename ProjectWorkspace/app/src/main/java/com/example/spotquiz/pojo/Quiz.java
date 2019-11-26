@@ -1,6 +1,8 @@
 package com.example.spotquiz.pojo;
 
-public class Quiz {
+import java.io.Serializable;
+
+public class Quiz implements Serializable {
 String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength;
 
     public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation) {
