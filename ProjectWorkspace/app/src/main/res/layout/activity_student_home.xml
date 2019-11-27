@@ -5,10 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StudentHomeActivity">
-    <Button
-        android:id="@+id/btnLogout"
+
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:text="logout" />
+        android:text="@string/student_home"
+        android:textColor="@color/colorBlack"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/btnquiz"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:text="@string/take_quiz"
+        android:layout_below="@id/textView"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/colorBlack"/>
+
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnquiz"/>
+
+
+
+
 </RelativeLayout>

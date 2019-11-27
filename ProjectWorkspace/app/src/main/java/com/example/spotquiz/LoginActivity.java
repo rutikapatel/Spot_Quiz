@@ -17,9 +17,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
     EditText email, password;
-    Button login,register;
+    Button login, register;
     private FirebaseAuth mAuth;
 
     @Override
@@ -36,7 +38,15 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(email.getText().toString(), password.getText().toString());
+
+                if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+
+                    email.setError("Please fill in your email ID");
+                    password.setError("Please fill in your password");
+                } else {
+
+                    login(email.getText().toString(), password.getText().toString());
+                }
             }
         });
 
@@ -50,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    protected void login(String email,String password){
+    protected void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -60,9 +70,20 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication Success.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
-                            startActivity(i);
 
+                            if(email.equalsIgnoreCase("student@dal.ca")) {
+                                Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else if(email.equalsIgnoreCase("prof@dal.ca")){
+                                Intent i = new Intent(LoginActivity.this, ProfessorHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }else{
+                                Intent i = new Intent(LoginActivity.this, StudentHomeActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
 

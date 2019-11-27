@@ -1,6 +1,13 @@
-package com.example.spotquiz;
+package com.example.spotquiz.pojo;
 
 public class Users {
+    String email;
+    String name;
+    String dalId;
+    Boolean professor, student;
+    String profilePhoto;
+
+
     public String getEmail() {
         return email;
     }
@@ -33,8 +40,6 @@ public class Users {
         this.student = student;
     }
 
-    String email;
-    String name;
 
     public String getDalId() {
         return dalId;
@@ -44,6 +49,13 @@ public class Users {
         this.dalId = dalId;
     }
 
-    String dalId;
-    Boolean professor,student;
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+
 }

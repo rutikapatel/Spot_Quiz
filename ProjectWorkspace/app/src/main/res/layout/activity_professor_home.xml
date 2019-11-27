@@ -7,20 +7,13 @@
     android:orientation="vertical"
     tools:context=".ProfessorHomeActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_margin="10dp"
-        android:hint="Quiz Title" >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/quizName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:inputType="textPersonName"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnquiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Create Quiz" />
 
 </LinearLayout>

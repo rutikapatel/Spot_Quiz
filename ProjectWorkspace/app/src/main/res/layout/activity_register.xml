@@ -4,84 +4,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center"
+    android:layout_marginTop="10dp"
+
     tools:context=".RegistrationActivity">
 
-    <TextView
-        android:id="@+id/lblEmail"
-        android:labelFor="@+id/lblEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="email"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_alignParentStart="true" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/email"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lblEmail"
-        android:ems="10"
-        android:layout_margin="10sp"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
-        android:inputType="textPersonName"
-        />
+        android:layout_margin="5dp"
+        android:layout_marginRight="2dp"
 
-    <TextView
-        android:id="@+id/lblPassword"
-        android:labelFor="@+id/lblEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="password"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/email"/>
+        app:srcCompat="@drawable/userprofilephoto" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/password"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lblName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp"
+        android:hint="@string/name"
+        android:textColor="@color/colorAccent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblName"
+            android:inputType="textPersonName" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lblDalId"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@id/lblName"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/DalId">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dalId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblDalId"
+            android:digits="abcdefghijklmnopqrstuvwxyz0123456789"
+            android:maxLength="8"
+            android:inputType="text" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RadioGroup
+        android:id="@+id/radioBtnGrp"
+        android:layout_width="390dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/lblDalId"
+        android:layout_alignEnd="@id/lblDalId"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="50dp"
+            android:checked="false"
+            android:text="@string/StudentRadioBtn" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/professor"
+            android:layout_width="105dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="55dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="25dp"
+            android:checked="false"
+            android:text="@string/ProfessorRadioBtn" />
+
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/lblEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@+id/radioBtnGrp"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/email"
+        android:labelFor="@+id/lblEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblEmail"
+            android:inputType="textEmailAddress" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/lblPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_below="@id/lblEmail"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:hint="@string/pwd"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblPassword"
+            android:layout_centerHorizontal="true"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnregister"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lblPassword"
-        android:ems="10"
-        android:layout_margin="10sp"
         android:layout_centerHorizontal="true"
-        android:inputType="textPersonName"
-        />
-
-
-
-    <TextView
-        android:id="@+id/lblDalId"
-        android:labelFor="@+id/lblDalId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="dalId"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/password"/>
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/dalId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lblDalId"
-        android:ems="10"
-        android:layout_margin="10sp"
-        android:layout_centerHorizontal="true"
-        android:inputType="textPersonName"
-        />
-
-    <Button
-        android:id="@+id/btnregister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/dalId"
-        android:layout_centerHorizontal="true"
-        android:text="Register" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:padding="5dp"
+        android:text="@string/regbtn" />
 
 </RelativeLayout>
