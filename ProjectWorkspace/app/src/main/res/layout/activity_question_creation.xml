@@ -9,6 +9,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:columnWidth="25dp"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="5dp"
+            android:stretchMode="spacingWidthUniform"
+            android:layout_margin="20dp"
+            />
+
+
         <TextView
             android:id="@+id/questionNo"
             android:layout_width="match_parent"
