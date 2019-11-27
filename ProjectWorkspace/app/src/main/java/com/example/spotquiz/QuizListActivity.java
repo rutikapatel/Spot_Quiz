@@ -198,7 +198,7 @@ public class QuizListActivity extends AppCompatActivity {
                 availableQuiz.remove(q);
             }
         }
-//        System.out.println("available quiz"+availableQuiz.get(0)) ;
+ //        System.out.println("available quiz"+availableQuiz.get(0)) ;
 
         ArrayList<String> dummy = new ArrayList<>();
 

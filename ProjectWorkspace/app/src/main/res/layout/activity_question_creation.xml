@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/questionNo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Question 1" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lblQuestion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="10dp"
+            android:hint="Question">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lblOption1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:hint="Option 1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/option1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lblOption2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:hint="Option 2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/option2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lblOption3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:hint="Option 3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/option3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lblOption4"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:hint="Option 4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/option4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:entries="@array/answer" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="104dp"
+                android:padding="5dp"
+                android:text="Next" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPrevious"
+                android:layout_width="wrap_content"
+                android:layout_height="104dp"
+                android:padding="5dp"
+                android:text="Previous" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreate"
+            android:layout_width="wrap_content"
+            android:layout_height="104dp"
+            android:padding="5dp"
+            android:text="Create" />
+    </LinearLayout>
+</ScrollView>
