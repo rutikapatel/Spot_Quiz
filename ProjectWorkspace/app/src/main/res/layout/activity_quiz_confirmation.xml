@@ -4,12 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizConfirmationActivity">
+    android:orientation="vertical"
+    tools:context=".QuizConfirmationActivity"
+    >
 
     <TextView
         android:id="@+id/quizName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+
 
 </LinearLayout>

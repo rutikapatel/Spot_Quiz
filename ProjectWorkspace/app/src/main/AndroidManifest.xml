@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QuizConfirmationActivity"></activity>
+        <activity android:name=".QuestionCreationActivity"></activity>
+        <activity android:name=".QuizConfirmationActivity" />
         <activity android:name=".QuizListActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

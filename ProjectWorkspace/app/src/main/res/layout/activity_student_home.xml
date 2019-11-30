@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".StudentHomeActivity">
 
+
     <LinearLayout
         android:id="@+id/imglayout"
         android:layout_centerHorizontal="true"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/student_home"
@@ -41,13 +42,12 @@
             android:text="@string/take_quiz" />
 
     </LinearLayout>
+
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_below="@+id/linear"/>
-
-
 
 </RelativeLayout>
