@@ -6,6 +6,15 @@ public class Users {
     String dalId;
     Boolean professor, student;
     String profilePhoto;
+    String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
 
     public String getEmail() {

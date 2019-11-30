@@ -59,12 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
     String photo;
     Uri selectedImage;
     private static final String LOG_TAG = "RegisterAct";
-
-
-    // [START declare_auth_listener]
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
-
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +254,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             System.out.println("success");
                             //  Log.d(LOG_TAG,"TAG",+ task.isSuccessful());
                             FirebaseUser user = mAuth.getCurrentUser();
-                            userProfileCreation(name, mail, dalId, studnt, prof, photo);
+                            userID = mAuth.getUid();
+                            System.out.println("uid is" +userID);
+                            userProfileCreation(name, mail, dalId, studnt, prof, photo,userID);
                             Toast.makeText(RegistrationActivity.this, "Registration Success",
                                     Toast.LENGTH_LONG).show();
                             System.out.println("Registration  is successful");
@@ -279,7 +276,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //Setting values based on user type
     protected void userProfileCreation(String name, String email, String dalId,
-                                       final boolean studnt, final boolean prof, String profilePhoto) {
+                                       final boolean studnt, final boolean prof, String profilePhoto,String userID) {
         Users user = new Users();
         user.setEmail(email);
         user.setName(name);
@@ -287,8 +284,9 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setProfessor(prof);
         user.setDalId(dalId);
         user.setProfilePhoto(profilePhoto);
+        user.setUserId(userID);
         //  System.out.println("the BASE64String is" + profilePhoto);
-        mDatabase.child("users").child(dalId).setValue(user);
+        mDatabase.child("users").child(userID).setValue(user);
         startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
     }
 }

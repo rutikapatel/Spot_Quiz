@@ -5,12 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StudentHomeActivity">
+
+    <LinearLayout
+        android:id="@+id/imglayout"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/userprofilephoto"
+        android:contentDescription="@string/name" />
+
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/linear"
+        android:layout_below="@id/imglayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true">
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -23,16 +38,14 @@
             android:id="@+id/btnquiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
             android:text="@string/take_quiz" />
 
     </LinearLayout>
-
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_below="@+id/linear"/>
 
 
