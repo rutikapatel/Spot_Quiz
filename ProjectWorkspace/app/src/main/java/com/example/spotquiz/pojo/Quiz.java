@@ -1,9 +1,36 @@
 package com.example.spotquiz.pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Quiz implements Serializable {
-String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength;
+String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength,professorId;
+Boolean active;
+    ArrayList<Question> questions;
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(ArrayList<Question> questions) {
+        this.questions = questions;
+    }
+
+    public String getProfessorId() {
+        return professorId;
+    }
+
+    public void setProfessorId(String professorId) {
+        this.professorId = professorId;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
     public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation) {
         this.quizName = quizName;

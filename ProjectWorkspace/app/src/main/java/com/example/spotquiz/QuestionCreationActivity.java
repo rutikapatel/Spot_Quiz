@@ -53,11 +53,12 @@ public class QuestionCreationActivity extends AppCompatActivity {
         quiz = (Quiz)intent.getSerializableExtra("quiz");
         if(quiz != null){
             quizName.setText(quiz.getQuizName());
-    }
+        }
 
+        int noOfQuestions = Integer.parseInt(quiz.getNoOfQuestions());
         gridView = findViewById(R.id.gridview);
         ArrayList<Grid> numbers = new ArrayList<>();
-        for(int j=0;j<10;j++){
+        for(int j=0;j<noOfQuestions;j++){
             Grid g = new Grid();
             g.setNumber(i+1);
             g.setFinished(false);
@@ -75,7 +76,7 @@ public class QuestionCreationActivity extends AppCompatActivity {
         create = findViewById(R.id.btnCreate);
 
         previous.setVisibility(View.INVISIBLE);
-        ArrayList<Question> list = new ArrayList<>(10);
+        ArrayList<Question> list = new ArrayList<>();
 
 
         create.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +95,11 @@ public class QuestionCreationActivity extends AppCompatActivity {
                 q.setCorrectAnswer(Integer.parseInt(answer.getSelectedItem().toString()));
 
                 list.add(q);
-                mDatabase.child("Questions").child("quiz1").setValue(list);
+
+                quiz.setQuestions(list);
+              //  mDatabase.child("Questions").child("quiz1").setValue(list);
+                mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()+quiz.getProfessorId()).setValue(quiz);
+
                 Toast.makeText(QuestionCreationActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
             }
         });

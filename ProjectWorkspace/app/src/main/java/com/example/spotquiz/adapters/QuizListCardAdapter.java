@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
+import com.example.spotquiz.QuestionAnswerActivity;
+import com.example.spotquiz.QuestionCreationActivity;
 import com.example.spotquiz.QuizConfirmationActivity;
 import com.example.spotquiz.QuizCreationActivity;
 import com.example.spotquiz.R;
@@ -72,9 +74,10 @@ public class QuizListCardAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 System.out.println("clicked");
-                Intent intent = new Intent(context, QuizConfirmationActivity.class);
+                Intent intent = new Intent(context, QuestionAnswerActivity.class);
                 intent.putExtra("quiz",q);
                 context.startActivity(intent);
+
             }
         });
         return convertView;

@@ -17,6 +17,7 @@ import com.example.spotquiz.pojo.Quiz;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +30,7 @@ public class QuizCreationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private FirebaseUser user;
 
     private QuizLocation selectedLocation;
     private Button create;
@@ -46,6 +48,13 @@ public class QuizCreationActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+
+        user = mAuth.getCurrentUser();
+        if (user!=null) {
+            System.out.println("user"+ user.getUid());
+        } else {
+            // No user is signed in.
+        }
 
         quizName =  findViewById(R.id.quizName);
         course =  findViewById(R.id.courseName);
@@ -134,8 +143,13 @@ public class QuizCreationActivity extends AppCompatActivity {
         quiz.setQuizDate(quizDate.getText().toString());
         quiz.setQuizStartTime(quizTime.getText().toString());
         quiz.setQuizLength(quizLength.getSelectedItem().toString());
+        quiz.setActive(Boolean.FALSE);
+        quiz.setProfessorId(user.getUid());
 
-        mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
+        Intent intent = new Intent(getApplicationContext(),QuestionCreationActivity.class);
+        intent.putExtra("quiz",quiz);
+        startActivity(intent);
+       // mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
     }
 
     public void DateView(){

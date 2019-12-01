@@ -16,4 +16,9 @@
 
         android:text="Create Quiz" />
 
+    <ListView
+        android:id="@+id/quizList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>
