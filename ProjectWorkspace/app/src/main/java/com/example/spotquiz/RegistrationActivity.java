@@ -100,7 +100,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Edittext validation
                 if (name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
                         || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
-                        || !(student.isChecked() || professor.isChecked()) || imgView.getDrawable() == null) {
+                        || !(student.isChecked() || professor.isChecked()) || imgView.getDrawable().getConstantState() == null) {
 
 
                     name.setError("Please enter your name");

@@ -2,6 +2,8 @@ package com.example.spotquiz;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +16,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.spotquiz.pojo.Users;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +35,10 @@ public class StudentHomeActivity extends AppCompatActivity {
     private DatabaseReference database;
     private DatabaseReference uDatabase;
     private String studentImage;
+    private static final String TAG = "StudentHomeAcitivity";
+    private FirebaseUser userID;
+    Users usr;
+    Bitmap bmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,7 @@ public class StudentHomeActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
         imageView = findViewById(R.id.imageView);
         btnquiz = findViewById(R.id.btnquiz);
+        userID = FirebaseAuth.getInstance().getCurrentUser();
 
         database = FirebaseDatabase.getInstance().getReference("Quizes");
         final ArrayList<String> arrayList = new ArrayList<>();
@@ -77,8 +86,9 @@ public class StudentHomeActivity extends AppCompatActivity {
     private void loadImage() {
 
         uDatabase = FirebaseDatabase.getInstance().getReference("users");
+        System.out.println("current user" + userID.getUid());
 
-        uDatabase.addValueEventListener(new ValueEventListener() {
+        uDatabase.orderByChild("userId").equalTo(userID.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -87,8 +97,23 @@ public class StudentHomeActivity extends AppCompatActivity {
                     System.out.println("keys " + childData.getKey());
                     System.out.println("value" + childData.getValue());
 
+                    usr = new Users(childData.child("email").getValue().toString(),
+                            childData.child("name").getValue().toString(),
+                            childData.child("dalId").getValue().toString(),
+                            Boolean.parseBoolean(childData.child("professor").getValue().toString()),
+                            Boolean.parseBoolean(childData.child("student").getValue().toString()),
+                            childData.child("profilePhoto").getValue().toString(),
+                            childData.child("userId").getValue().toString()
+
+                    );
 
                 }
+                studentImage = usr.getProfilePhoto();
+                bmap = getBitmapFromEncodedString(studentImage);
+                RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmap);
+                //   imageView.setImageBitmap(bmap);
+                mDrawable.setCircular(true);
+                imageView.setImageDrawable(mDrawable);
 
             }
 

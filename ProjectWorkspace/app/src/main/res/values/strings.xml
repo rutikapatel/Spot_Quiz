@@ -48,4 +48,7 @@
     </string-array>
 
     <string name="txtTimer">%1$s : %2$s</string>
+
+    <string name="instructions">SpotQuiz uses your photo matching your authentication. We don not use your photo for any other purposes
+    </string>
 </resources>

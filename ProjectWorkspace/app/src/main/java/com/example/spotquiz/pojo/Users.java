@@ -8,6 +8,19 @@ public class Users {
     String profilePhoto;
     String userId;
 
+    public Users(String email, String name, String dalId, Boolean professor, Boolean student, String profilePhoto, String userId) {
+        this.email = email;
+        this.name = name;
+        this.dalId = dalId;
+        this.professor = professor;
+        this.student = student;
+        this.profilePhoto = profilePhoto;
+        this.userId = userId;
+    }
+
+    public Users() {
+    }
+
     public String getUserId() {
         return userId;
     }
