@@ -38,7 +38,7 @@ public class Question implements Serializable {
     }
 
     public Question(){
-        
+
     }
 
     private int correctAnswer;

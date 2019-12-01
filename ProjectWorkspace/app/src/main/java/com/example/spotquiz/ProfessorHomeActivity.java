@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.spotquiz.adapters.QuizListProfAdapter;
+import com.example.spotquiz.pojo.Question;
 import com.example.spotquiz.pojo.Quiz;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,6 +69,19 @@ public class ProfessorHomeActivity extends AppCompatActivity {
                             Double.parseDouble(childData.child("quizLocation").child("latitude").getValue().toString())
                     );
 
+
+                    ArrayList<Question> questions = new ArrayList<>();
+
+                    for(int i = 0;i<childData.child("questions").getChildrenCount();i++){
+                        ArrayList<String> options = new ArrayList<>();
+                        Question question = new Question();
+                        for(int j=0;j<4;j++)
+                        options.add(childData.child("questions").child(Integer.toString(i)).child("options").child(Integer.toString(j)).getValue().toString());
+                        question.setQuestion(childData.child("questions").child(Integer.toString(i)).child("question").getValue().toString());
+                        question.setCorrectAnswer(Integer.parseInt(childData.child("questions").child(Integer.toString(i)).child("correctAnswer").getValue().toString()));
+                        question.setOptions(options);
+                        questions.add(question);
+                    }
                     Quiz q = new Quiz(childData.child("quizName").getValue().toString(),
                             childData.child("courseName").getValue().toString(),
                             childData.child("noOfQuestions").getValue().toString(),
@@ -75,7 +89,9 @@ public class ProfessorHomeActivity extends AppCompatActivity {
                             childData.child("quizDate").getValue().toString(),
                             childData.child("quizStartTime").getValue().toString(),
                             childData.child("quizLength").getValue().toString(),
-                            quizLocation);
+                            quizLocation,
+                            Boolean.parseBoolean(childData.child("active").getValue().toString()),
+                            questions);
                     System.out.println("pish" + q.getQuizName());
                     quizList.add(q);
                 }

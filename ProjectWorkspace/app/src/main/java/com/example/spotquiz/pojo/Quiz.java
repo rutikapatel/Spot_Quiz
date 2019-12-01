@@ -32,7 +32,7 @@ Boolean active;
         this.active = active;
     }
 
-    public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation) {
+    public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation,Boolean active, ArrayList<Question> questions) {
         this.quizName = quizName;
         this.courseName = courseName;
         this.noOfQuestions = noOfQuestions;
@@ -41,6 +41,7 @@ Boolean active;
         this.quizStartTime = quizStartTime;
         this.quizLength = quizLength;
         this.quizLocation = quizLocation;
+        this.active = active;
     }
 
     public Quiz() {
