@@ -15,23 +15,34 @@
             >
             <TextView
                 android:id="@+id/quizName"
-                android:layout_width="100dp"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
-
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
                 />
 
             <TextView
                 android:id="@+id/quizStartTime"
-                android:layout_width="100dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
-
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:gravity="center"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartQuiz"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:text="take quiz"></com.google.android.material.button.MaterialButton>
+                android:layout_height="75dp"
+                android:text="take quiz"
+                android:paddingBottom="1dp"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
+                android:paddingTop="1dp"
+                android:layout_gravity="center"
+                android:gravity="center"></com.google.android.material.button.MaterialButton>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
