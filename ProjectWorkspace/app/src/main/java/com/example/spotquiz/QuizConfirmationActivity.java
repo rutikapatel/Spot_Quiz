@@ -81,6 +81,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (setImage = true) {
+                    System.out.println("Image set");
                     QuizResult result = new QuizResult();
                     result.setQuizName(quiz.getQuizName());
                     result.setQuizId(quiz.getQuizName() + quiz.getCourseName() + quiz.getQuizLocation().getName() + quiz.getProfessorId());
@@ -89,13 +90,12 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                     mDatabse = FirebaseDatabase.getInstance().getReference();
 
                     mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
-
-                    startActivity(new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class));
+                    Intent i =  new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class);
+                    i.putExtra("quiz",quiz);
+                    startActivity(i);
 
                 } else {
-
                     Toast.makeText(QuizConfirmationActivity.this, "Please take a photo or select an image in gallery", Toast.LENGTH_LONG).show();
-                    ;
                 }
             }
         });
