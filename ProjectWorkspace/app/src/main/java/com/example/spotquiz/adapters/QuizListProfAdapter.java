@@ -22,6 +22,13 @@ import com.example.spotquiz.QuizConfirmationActivity;
 import com.example.spotquiz.QuizCreationActivity;
 import com.example.spotquiz.R;
 import com.example.spotquiz.pojo.Quiz;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -33,6 +40,8 @@ import java.util.ArrayList;
     public class QuizListProfAdapter extends BaseAdapter {
         Context context;
         ArrayList<Quiz> listOfQuizzes = new ArrayList<>();
+        private DatabaseReference mDatabse;
+        private FirebaseUser user;
 
         public QuizListProfAdapter(Context context, ArrayList<Quiz> listOfQuizzes) {
             this.context = context;
@@ -70,7 +79,7 @@ import java.util.ArrayList;
             name.setText(q.getQuizName());
             location.setText(q.getQuizLocation().getName());
             date.setText(q.getQuizStartTime());
-
+            mDatabse = FirebaseDatabase.getInstance().getReference("quizzes");
             if(q.getActive()!= null && q.getActive()){
                 activate.setText("De-Activate");
             }else{
@@ -82,8 +91,8 @@ import java.util.ArrayList;
                 @Override
                 public void onClick(View v) {
                     System.out.println("clicked");
-
-
+                    q.setActive(!q.getActive());
+                    mDatabse.child(q.getQuizName()+q.getCourseName()+q.getQuizLocation().getName()+q.getProfessorId()).setValue(q);
                 }
             });
             return convertView;

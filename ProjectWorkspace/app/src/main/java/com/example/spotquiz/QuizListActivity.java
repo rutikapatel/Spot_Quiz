@@ -142,7 +142,7 @@ public class QuizListActivity extends AppCompatActivity {
 
     private void getQuiz() {
         Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d");
         String todayDate = sdf.format(today);
         ArrayList<Quiz> todayQuiz = new ArrayList<>();
         System.out.println(todayDate);
@@ -179,7 +179,8 @@ public class QuizListActivity extends AppCompatActivity {
                             childData.child("quizLength").getValue().toString(),
                             quizLocation,
                             Boolean.parseBoolean(childData.child("active").getValue().toString()),
-                            questions);
+                            questions,
+                            childData.child("professorId").getValue().toString());
                     System.out.println("pish" + q.getQuizName());
                     todayQuiz.add(q);
                 }
@@ -210,7 +211,7 @@ public class QuizListActivity extends AppCompatActivity {
             des.setLongitude(q.getQuizLocation().getLongitude());
             float dist = cur.distanceTo(des);
             System.out.println("distance" + dist+"quiz anme"+ q.getQuizLocation().getName()+"   lat  "+des.getLatitude()+ "  lon  "+des.getLongitude());
-            if (dist > 200.00) {
+            if (dist > 200.00 || !q.getActive()) {
                 availableQuiz.remove(q);
             }
         }

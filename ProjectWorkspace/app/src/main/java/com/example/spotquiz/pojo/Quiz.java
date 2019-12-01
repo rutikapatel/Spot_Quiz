@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Quiz implements Serializable {
-String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength,professorId;
-Boolean active;
+    String quizName,courseName,noOfQuestions,quizKey,quizDate,quizStartTime,quizLength,professorId;
+    Boolean active;
     ArrayList<Question> questions;
 
     public ArrayList<Question> getQuestions() {
@@ -32,7 +32,7 @@ Boolean active;
         this.active = active;
     }
 
-    public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation,Boolean active, ArrayList<Question> questions) {
+    public Quiz(String quizName, String courseName, String noOfQuestions, String quizKey, String quizDate, String quizStartTime, String quizLength, QuizLocation quizLocation,Boolean active, ArrayList<Question> questions,String professorId) {
         this.quizName = quizName;
         this.courseName = courseName;
         this.noOfQuestions = noOfQuestions;
@@ -42,6 +42,9 @@ Boolean active;
         this.quizLength = quizLength;
         this.quizLocation = quizLocation;
         this.active = active;
+        this.questions = questions;
+        this.professorId = professorId;
+
     }
 
     public Quiz() {

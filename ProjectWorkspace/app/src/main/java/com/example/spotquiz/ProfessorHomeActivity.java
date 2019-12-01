@@ -29,6 +29,7 @@ public class ProfessorHomeActivity extends AppCompatActivity {
     private FirebaseUser user;
     private QuizListProfAdapter cardAdapter;
 
+    ArrayList<Quiz> quizList;
     private ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +57,12 @@ public class ProfessorHomeActivity extends AppCompatActivity {
 
     private void getQuiz() {
 
-        ArrayList<Quiz> quizList = new ArrayList<>();
+
         //System.out.println(todayDate);
         mDatabase.orderByChild("professorId").equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                quizList = new ArrayList<>();
                 for (DataSnapshot childData : dataSnapshot.getChildren()) {
                     System.out.println("keys" + childData.getKey());
 
@@ -91,11 +93,12 @@ public class ProfessorHomeActivity extends AppCompatActivity {
                             childData.child("quizLength").getValue().toString(),
                             quizLocation,
                             Boolean.parseBoolean(childData.child("active").getValue().toString()),
-                            questions);
-                    System.out.println("pish" + q.getQuizName());
+                            questions,
+                            childData.child("professorId").getValue().toString());
+                    System.out.println("pish" + q.getProfessorId());
                     quizList.add(q);
                 }
-                createQuizList(quizList);
+                createQuizList();
             }
 
             @Override
@@ -106,7 +109,7 @@ public class ProfessorHomeActivity extends AppCompatActivity {
 
     }
 
-    void createQuizList(ArrayList<Quiz> quizList){
+    void createQuizList(){
         cardAdapter = new QuizListProfAdapter(this,quizList);
         list.setAdapter(cardAdapter);
     }
