@@ -31,10 +31,14 @@ public class Question implements Serializable {
     private String question;
     private ArrayList<String> options;
 
-    public Question(String question, ArrayList<String> options, int correctAnswer) { 
+    public Question(String question, ArrayList<String> options, int correctAnswer) {
         this.question = question;
         this.options = options;
         this.correctAnswer = correctAnswer;
+    }
+
+    public Question(){
+        
     }
 
     private int correctAnswer;
