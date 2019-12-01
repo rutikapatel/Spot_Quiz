@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -19,8 +20,6 @@ import com.example.spotquiz.adapters.Grid;
 import com.example.spotquiz.adapters.NumberGridAdapter;
 import com.example.spotquiz.pojo.Question;
 import com.example.spotquiz.pojo.Quiz;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -29,9 +28,8 @@ import java.util.ArrayList;
 
 public class QuestionAnswerActivity extends AppCompatActivity {
 
-    private TextView q_number, q_description, option_1, option_2, option_3, option_4, q_showing;
-    private String answer;
-    private Button start, next, previous;
+    private TextView q_number, q_description, option_1, option_2, option_3, option_4;
+    private Button next, previous, submit;
     int i = 0;
     private DatabaseReference mDatabase;
     private NumberGridAdapter nga;
@@ -48,7 +46,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
 
     private CountDownTimer timer;
-    private long minutes, seconds;
+    private long minutes, seconds = 0;
 
     private Quiz sq;
 
@@ -66,7 +64,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         radioGroup = findViewById(R.id.radio);
         next = findViewById(R.id.btnNext);
         previous = findViewById(R.id.btnPrevious);
-        start = findViewById(R.id.btnStartQuiz);
+        submit = findViewById(R.id.btnSubmit);
 
         txtTimer = findViewById(R.id.timer);
 
@@ -86,11 +84,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
         Grid h = (Grid) nga.getItem(0);
         h.change(ContextCompat.getColor(this,R.color.colorYellow));
-        mDatabase = FirebaseDatabase.getInstance().getReference("Questions");
+        mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
 
         previous.setVisibility(View.INVISIBLE);
 
-
+        startTimer();
 
        /* mDatabase.equalTo("Quiz1").addValueEventListener(new ValueEventListener()
                 {
@@ -142,7 +140,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
 
 
-                q_number.setText(quesnum.get(i));
+                q_number.setText(Integer.toString(Integer.parseInt(quesnum.get(i)) + 1));
                 q_description.setText(quesdesc.get(i));
                 option_1.setText(quesopt.get(i).get(0));
                 option_2.setText(quesopt.get(i).get(1));
@@ -169,7 +167,12 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorYellow));
 
-                q_number.setText(quesnum.get(i));
+                if (i>1) radioButton.setChecked(false);
+
+                previous.setVisibility(View.VISIBLE);
+                if(i==4) next.setVisibility(View.INVISIBLE);
+
+                q_number.setText((Integer.toString(Integer.parseInt(quesnum.get(i)) + 1)));
                 q_description.setText(quesdesc.get(i));
                 option_1.setText(quesopt.get(i).get(0));
                 option_2.setText(quesopt.get(i).get(1));
@@ -191,10 +194,6 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             public void onClick(View v)
             {
 
-                if(i==0)
-                {
-                    previous.setVisibility(View.INVISIBLE);
-                }
                 Grid h = (Grid) nga.getItem(i);
 
                 System.out.println("objchk"+h.getFinished());
@@ -208,7 +207,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorYellow));
 
-                q_number.setText(quesnum.get(i));
+                next.setVisibility(View.VISIBLE);
+                if(i==0) previous.setVisibility(View.INVISIBLE);
+                else previous.setVisibility(View.VISIBLE);
+
+                q_number.setText((Integer.toString(Integer.parseInt(quesnum.get(i)) + 1)));
                 q_description.setText(quesdesc.get(i));
                 option_1.setText(quesopt.get(i).get(0));
                 option_2.setText(quesopt.get(i).get(1));
@@ -222,6 +225,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 //                Toast.makeText(QuestionAnswerActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
             }
         });
+
+//        submit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int markcount = 0;
+//                for(int j=0; j<5; j++)
+//                {
+//                    if(givenans[j].equalsIgnoreCase(correctans.get(j))) markcount++;
+//                }
+//
+//            }
+//        });
     }
 
     private void startTimer()
