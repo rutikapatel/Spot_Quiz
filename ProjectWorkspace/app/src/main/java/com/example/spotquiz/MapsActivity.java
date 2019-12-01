@@ -21,7 +21,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
@@ -32,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,9 +87,11 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
     private String[] mLikelyPlaceAddresses;
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
+    private Marker marker;
 
     private Button selectLocation;
     private QuizLocation quizLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +122,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                 Intent intent = new Intent(getApplicationContext(),QuizCreationActivity.class);
                 intent.putExtra("location",quizLocation);
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -126,7 +136,10 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
             public void onPlaceSelected(Place place) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng()
                         , DEFAULT_ZOOM));
-                mMap.addMarker(new MarkerOptions()
+                if(marker != null){
+                    marker.remove();
+                }
+                marker = mMap.addMarker(new MarkerOptions()
                         .title(place.getName())
                         .position(place.getLatLng())
                         );
@@ -256,7 +269,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
         JSONArray contacts = jsonObj.getJSONArray("weather");
         for(int i =0;i<contacts.length();i++){
             JSONObject c = contacts.getJSONObject(i);
-            Log.e(TAG, c.getString("name"));
+//            Log.e(TAG, c.getString("name"));
         }
     }
 
@@ -278,9 +291,57 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                             if(mLastKnownLocation!=null){
                             Log.d(TAG, "Latitude: " + mLastKnownLocation.getLatitude());
                             Log.d(TAG, "Longitude: " + mLastKnownLocation.getLongitude());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+
+                                String api = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+                                api = api+mLastKnownLocation.getLatitude()+","+mLastKnownLocation.getLongitude()+"&key="+getResources().getString(R.string.google_maps_key);
+
+                                RequestQueue queue = Volley.newRequestQueue(MapsActivity.this);
+
+                                StringRequest stringRequest = new StringRequest(Request.Method.GET, api,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.d("api results",response);
+                                                System.out.println("api result"+response);
+                                                JSONObject json = null;
+                                                try {
+                                                    json = new JSONObject(response);
+                                                    JSONArray jsonArray = json.getJSONArray("results");
+                                                    json = jsonArray.getJSONObject(0);
+                                                    String address = json.get("formatted_address").toString();
+                                                    System.out.println("address"+address);
+
+                                                    marker =  mMap.addMarker(new MarkerOptions()
+                                                            .title(address)
+                                                            .position( new LatLng(mLastKnownLocation.getLatitude(),
+                                                                    mLastKnownLocation.getLongitude()))
+                                                            );
+                                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                                            new LatLng(mLastKnownLocation.getLatitude(),
+                                                                    mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                                    quizLocation.setName(address);
+                                                    quizLocation.setLatitude(mLastKnownLocation.getLatitude());
+                                                    quizLocation.setLongitude(mLastKnownLocation.getLongitude());
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(MapsActivity.this,"Api Failed/Internet issue",Toast.LENGTH_LONG);
+                                    }
+                                });
+                                queue.add(stringRequest);
+
+
+
+
+
+                                // Position the map's camera at the location of the marker.
+                             /*  */
                             }else{
 
                             }
@@ -335,13 +396,22 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
             // Add a marker for the selected place, with an info window
             // showing information about that place.
-            mMap.addMarker(new MarkerOptions()
+            if(marker != null){
+                marker.remove();
+            }
+
+           marker =  mMap.addMarker(new MarkerOptions()
                     .title(mLikelyPlaceNames[position])
                     .position(markerLatLng)
                     .snippet(markerSnippet));
 
+
+
             // Position the map's camera at the location of the marker.
             mMap.moveCamera(CameraUpdateFactory.newLatLng(markerLatLng));
+            quizLocation.setName(mLikelyPlaceNames[position]);
+            quizLocation.setLatitude(markerLatLng.latitude);
+            quizLocation.setLongitude(markerLatLng.longitude);
         }
     };
 

@@ -3,6 +3,7 @@ package com.example.spotquiz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import com.example.spotquiz.adapters.Grid;
 import com.example.spotquiz.adapters.NumberGridAdapter;
 import com.example.spotquiz.pojo.Question;
+import com.example.spotquiz.pojo.Quiz;
+import com.example.spotquiz.pojo.QuizLocation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,19 +26,21 @@ import java.util.ArrayList;
 public class QuestionCreationActivity extends AppCompatActivity {
 
     private EditText question, option1, option2, option3, option4;
-    private TextView questionNo;
+    private TextView questionNo,quizName;
     private Spinner answer;
     private Button create, next, previous;
     int i = 0;
     private DatabaseReference mDatabase;
     private NumberGridAdapter nga;
     private GridView gridView;
+    private Quiz quiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_creation);
 
+        quizName = findViewById(R.id.quizName);
         questionNo = findViewById(R.id.questionNo);
         question = findViewById(R.id.question);
         option1 = findViewById(R.id.option1);
@@ -43,6 +48,12 @@ public class QuestionCreationActivity extends AppCompatActivity {
         option3 = findViewById(R.id.option3);
         option4 = findViewById(R.id.option4);
         answer = findViewById(R.id.answer);
+
+        Intent intent = getIntent();
+        quiz = (Quiz)intent.getSerializableExtra("quiz");
+        if(quiz != null){
+            quizName.setText(quiz.getQuizName());
+    }
 
         gridView = findViewById(R.id.gridview);
         ArrayList<Grid> numbers = new ArrayList<>();

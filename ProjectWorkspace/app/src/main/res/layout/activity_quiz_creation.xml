@@ -137,7 +137,12 @@
             android:editable="false"
             />
     </com.google.android.material.textfield.TextInputLayout>
-
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quiz Length"
+        android:layout_margin="2dp"
+        />
     <Spinner
         android:id="@+id/quizLength"
         android:layout_width="match_parent"

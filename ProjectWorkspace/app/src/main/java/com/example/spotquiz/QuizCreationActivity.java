@@ -134,6 +134,7 @@ public class QuizCreationActivity extends AppCompatActivity {
         quiz.setQuizDate(quizDate.getText().toString());
         quiz.setQuizStartTime(quizTime.getText().toString());
         quiz.setQuizLength(quizLength.getSelectedItem().toString());
+
         mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
     }
 
@@ -143,6 +144,7 @@ public class QuizCreationActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
                 quizDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+                quizTime.setError(null);
             }};
         DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
 
@@ -179,6 +181,7 @@ public class QuizCreationActivity extends AppCompatActivity {
                         .append(min ).append(" ").append(timeSet).toString();
                 System.out.println("Time:"+aTime);
                 quizTime.setText(aTime);
+                quizTime.setError(null);
 
             }
         }, 0, 0, false);
