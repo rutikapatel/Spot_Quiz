@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -49,6 +50,8 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private long minutes, seconds;
 
+    private Quiz sq;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,20 +91,15 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         previous.setVisibility(View.INVISIBLE);
 
 
-        start.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mDatabase.addValueEventListener(new ValueEventListener()
+
+       /* mDatabase.equalTo("Quiz1").addValueEventListener(new ValueEventListener()
                 {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot)
                     {
                         for(DataSnapshot childData : dataSnapshot.getChildren())
                         {
-                            if(childData.getValue().toString() == "quiz1")
-                            {
+
                                 for(int j = 0; j < childData.getChildrenCount(); j++)
                                 {
                                     String index = Integer.toString(j);
@@ -119,14 +117,30 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 //                                    }
                                     correctans.add(childData.child(index).child("correctAnswer").getValue().toString());
                                 }
-                            }
+
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
-                });
+                });*/
+                Intent intent = getIntent();
+                sq  = (Quiz)intent.getSerializableExtra("quiz");
+
+
+
+                ArrayList<Question> questions = sq.getQuestions();
+
+                for(int j = 0;j<questions.size();j++){
+                    quesnum.add(Integer.toString(j));
+                    quesdesc.add(questions.get(j).getQuestion());
+                    correctans.add(Integer.toString(questions.get(j).getCorrectAnswer()));
+                    quesopt.add(questions.get(j).getOptions());
+
+                }
+
+
 
                 q_number.setText(quesnum.get(i));
                 q_description.setText(quesdesc.get(i));
@@ -135,11 +149,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 option_3.setText(quesopt.get(i).get(2));
                 option_4.setText(quesopt.get(i).get(3));
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                radioButton = findViewById(selectedId);
-                givenans[i] = radioButton.getText().toString();
-            }
-        });
+                //int selectedId = radioGroup.getCheckedRadioButtonId();
+                //radioButton = findViewById(selectedId);
+                //givenans[i] = radioButton.getText().toString();
+
+
 
 
         next.setOnClickListener(new View.OnClickListener()
