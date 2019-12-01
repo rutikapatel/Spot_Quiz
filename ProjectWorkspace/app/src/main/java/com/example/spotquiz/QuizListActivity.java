@@ -50,6 +50,7 @@ public class QuizListActivity extends AppCompatActivity {
     private ListView quizList;
 
     private QuizListCardAdapter quizCard;
+    ArrayList<Quiz> todayQuiz;
 
 
     @Override
@@ -144,11 +145,12 @@ public class QuizListActivity extends AppCompatActivity {
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-d");
         String todayDate = sdf.format(today);
-        ArrayList<Quiz> todayQuiz = new ArrayList<>();
+
         System.out.println(todayDate);
         mDatabase.orderByChild("quizDate").equalTo(todayDate).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                todayQuiz = new ArrayList<>();
                 for (DataSnapshot childData : dataSnapshot.getChildren()) {
                     System.out.println("keys" + childData.getKey());
 
@@ -184,7 +186,7 @@ public class QuizListActivity extends AppCompatActivity {
                     System.out.println("pish" + q.getQuizName());
                     todayQuiz.add(q);
                 }
-                checkProximity(todayQuiz);
+                checkProximity();
             }
 
             @Override
@@ -196,7 +198,7 @@ public class QuizListActivity extends AppCompatActivity {
     }
 
 
-    void checkProximity(ArrayList<Quiz> todayQuiz) {
+    void checkProximity() {
 
         Location cur = new Location("");
 
