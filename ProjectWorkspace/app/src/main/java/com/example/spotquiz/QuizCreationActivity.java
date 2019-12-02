@@ -1,5 +1,6 @@
 package com.example.spotquiz;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -21,12 +22,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.nio.BufferUnderflowException;
 import java.util.Calendar;
 
 public class QuizCreationActivity extends AppCompatActivity {
-    private TextInputLayout chooseLocation,datePicker,timePicker ;
-    private EditText quizName,course,quizKey,quizLocation,quizDate,quizTime;
-    private Spinner noOfQuestions,quizLength;
+    private TextInputLayout chooseLocation, datePicker, timePicker;
+    private EditText quizName, course, quizKey, quizLocation, quizDate, quizTime;
+    private Spinner noOfQuestions, quizLength;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -38,8 +40,40 @@ public class QuizCreationActivity extends AppCompatActivity {
 
     private Calendar myCalendar = Calendar.getInstance();
     private int day = myCalendar.get(Calendar.DAY_OF_MONTH);
-    private int month=  myCalendar.get(Calendar.MONTH);
-    private int year =  myCalendar.get(Calendar.YEAR);
+    private int month = myCalendar.get(Calendar.MONTH);
+    private int year = myCalendar.get(Calendar.YEAR);
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        String qname = savedInstanceState.getString("quizName");
+        System.out.println("restored name restore instance" + qname);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        outState.putString("quizName", quizName.toString());
+        System.out.println("restored name" + outState.get("quizName"));
+    }
+
+
+    protected void onPause(Bundle outstate1) {
+        super.onPause();
+
+        String qname = outstate1.getString("quizName");
+        System.out.println("inside onPause restored name restore instance" + qname);
+    }
+
+
+    protected void onResume(Bundle outstate2) {
+
+        String qname = outstate2.getString("quizName");
+        System.out.println("inside onResume restored name restore instance" + qname);
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +84,21 @@ public class QuizCreationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         user = mAuth.getCurrentUser();
-        if (user!=null) {
-            System.out.println("user"+ user.getUid());
+        if (user != null) {
+            System.out.println("user" + user.getUid());
         } else {
             // No user is signed in.
         }
 
-        quizName =  findViewById(R.id.quizName);
-        course =  findViewById(R.id.courseName);
-        quizKey =  findViewById(R.id.quizPassword);
+        quizName = findViewById(R.id.quizName);
+        course = findViewById(R.id.courseName);
+        quizKey = findViewById(R.id.quizPassword);
 
-        noOfQuestions =  findViewById(R.id.noOfQuestions);
+        noOfQuestions = findViewById(R.id.noOfQuestions);
         quizLength = findViewById(R.id.quizLength);
 
         chooseLocation = findViewById(R.id.boxquizLocation);
-        quizLocation =  findViewById(R.id.quizLocation);
+        quizLocation = findViewById(R.id.quizLocation);
 
         datePicker = findViewById(R.id.boxquizdate);
         quizDate = findViewById(R.id.quizDate);
@@ -76,7 +110,7 @@ public class QuizCreationActivity extends AppCompatActivity {
         chooseLocation.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,12 +130,10 @@ public class QuizCreationActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        selectedLocation = (QuizLocation)intent.getSerializableExtra("location");
-        if(selectedLocation != null){
+        selectedLocation = (QuizLocation) intent.getSerializableExtra("location");
+        if (selectedLocation != null) {
             quizLocation.setText(selectedLocation.getName());
         }
-
-
 
 
         create.setOnClickListener(new View.OnClickListener() {
@@ -111,29 +143,37 @@ public class QuizCreationActivity extends AppCompatActivity {
 
                 if (quizName.getText().toString().isEmpty()) {
                     quizName.setError("Name should not be empty");
-                    valid = 1; }
+                    valid = 1;
+                }
                 if (course.getText().toString().isEmpty()) {
                     course.setError("Course should not be empty");
-                    valid = 1; }
+                    valid = 1;
+                }
                 if (quizKey.getText().toString().isEmpty()) {
                     quizKey.setError("Key should not be empty");
-                    valid = 1; }
+                    valid = 1;
+                }
                 if (quizLocation.getText().toString().isEmpty()) {
                     quizLocation.setError("Location should not be empty");
-                    valid = 1; }
+                    valid = 1;
+                }
                 if (quizDate.getText().toString().isEmpty()) {
                     quizDate.setError("Date should not be empty");
-                    valid = 1; }
+                    valid = 1;
+                }
                 if (quizTime.getText().toString().isEmpty()) {
                     quizTime.setError("Time should not be empty");
-                    valid = 1; }
-                if(valid == 0){  createQuiz(); }
+                    valid = 1;
+                }
+                if (valid == 0) {
+                    createQuiz();
+                }
             }
         });
     }
 
 
-    void createQuiz(){
+    void createQuiz() {
         Quiz quiz = new Quiz();
         quiz.setQuizName(quizName.getText().toString());
         quiz.setCourseName(course.getText().toString());
@@ -146,26 +186,26 @@ public class QuizCreationActivity extends AppCompatActivity {
         quiz.setActive(Boolean.FALSE);
         quiz.setProfessorId(user.getUid());
 
-        Intent intent = new Intent(getApplicationContext(),QuestionCreationActivity.class);
-        intent.putExtra("quiz",quiz);
+        Intent intent = new Intent(getApplicationContext(), QuestionCreationActivity.class);
+        intent.putExtra("quiz", quiz);
         startActivity(intent);
-       // mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
+        // mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
     }
 
-    public void DateView(){
-        DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
+    public void DateView() {
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-            {
-                quizDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                quizDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                 quizTime.setError(null);
-            }};
-        DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
+            }
+        };
+        DatePickerDialog dpDialog = new DatePickerDialog(this, listener, year, month, day);
 
         dpDialog.show();
     }
 
-    public void TimeView(){
+    public void TimeView() {
         TimePickerDialog timePickerDialog = new TimePickerDialog(QuizCreationActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
@@ -178,22 +218,22 @@ public class QuizCreationActivity extends AppCompatActivity {
                 } else if (hour == 0) {
                     hour += 12;
                     timeSet = "AM";
-                } else if (hour == 12){
+                } else if (hour == 12) {
                     timeSet = "PM";
-                }else{
+                } else {
                     timeSet = "AM";
                 }
 
                 String min = "";
                 if (minute < 10)
-                    min = "0" + minute ;
+                    min = "0" + minute;
                 else
                     min = String.valueOf(minute);
 
                 // Append in a StringBuilder
                 String aTime = new StringBuilder().append(hour).append(':')
-                        .append(min ).append(" ").append(timeSet).toString();
-                System.out.println("Time:"+aTime);
+                        .append(min).append(" ").append(timeSet).toString();
+                System.out.println("Time:" + aTime);
                 quizTime.setText(aTime);
                 quizTime.setError(null);
 

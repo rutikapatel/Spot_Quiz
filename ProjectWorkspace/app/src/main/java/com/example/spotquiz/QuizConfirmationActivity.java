@@ -5,6 +5,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,6 +21,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +50,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
     Boolean setImage = false;
     private FirebaseUser user;
     private DatabaseReference mDatabse;
+    private EditText quizpin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
         eula = findViewById(R.id.agreement);
         imageView = findViewById(R.id.imageView);
         confirm = findViewById(R.id.btnConfirm);
+        quizpin = findViewById(R.id.quizId);
 
         Intent intent = getIntent();
         quiz = (Quiz) intent.getSerializableExtra("quiz");
@@ -80,8 +85,17 @@ public class QuizConfirmationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (setImage = true) {
-                    System.out.println("Image set");
+                if (quizpin.getText().toString().isEmpty()) {
+                    quizpin.setError("Please enter quiz pin shared by the professor to proceed further");
+                    System.out.println("get text val" + quizpin.getText().toString());
+
+
+                }
+              else  if ((!setImage)) {
+                    Toast.makeText(QuizConfirmationActivity.this, "Please take a photo or select an image in gallery by clicking the photo icon", Toast.LENGTH_LONG).show();
+
+                } else {
+                    System.out.println("Image set" + setImage);
                     QuizResult result = new QuizResult();
                     result.setQuizName(quiz.getQuizName());
                     result.setQuizId(quiz.getQuizName() + quiz.getCourseName() + quiz.getQuizLocation().getName() + quiz.getProfessorId());
@@ -90,12 +104,11 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                     mDatabse = FirebaseDatabase.getInstance().getReference();
 
                     mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
-                    Intent i =  new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class);
-                    i.putExtra("quiz",quiz);
+                    Intent i = new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class);
+                    i.putExtra("quiz", quiz);
                     startActivity(i);
 
-                } else {
-                    Toast.makeText(QuizConfirmationActivity.this, "Please take a photo or select an image in gallery", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -111,7 +124,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(QuizConfirmationActivity.this
                     , Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Toast.makeText(QuizConfirmationActivity.this,
-                        "Please provide the required permission", Toast.LENGTH_SHORT).show();
+                        "Please provide the required storage permission in the app setting", Toast.LENGTH_SHORT).show();
 
             } else {
 
@@ -165,9 +178,14 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                     if (resultCode == RESULT_OK && data != null) {
 
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        imageView.setImageBitmap(selectedImage);
+                        //  imageView.setImageBitmap(selectedImage);
                         photo = convertToBase64(selectedImage);
-                        setImage = true;
+
+                        RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), selectedImage);
+                        //   imageView.setImageBitmap(bmap);
+                        mDrawable.setCircular(true);
+                        imageView.setImageDrawable(mDrawable);
+
                     }
                     break;
                 case 1:
@@ -178,7 +196,11 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                             bmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selImage);
                             imageView.setImageBitmap(bmap);
                             photo = convertToBase64(bmap);
-                            setImage = true;
+                            RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bmap);
+                            //   imageView.setImageBitmap(bmap);
+                            mDrawable.setCircular(true);
+                            imageView.setImageDrawable(mDrawable);
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -194,9 +216,11 @@ public class QuizConfirmationActivity extends AppCompatActivity {
     private String convertToBase64(Bitmap selectedImage) {
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
 
+        System.out.println("setimage value in base 64" + setImage);
         selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
 
         byte[] picArray = outstream.toByteArray();
+        setImage = true;
 
         // System.out.println("base64 string is" + Base64.encodeToString(picArray, Base64.URL_SAFE));
         return Base64.encodeToString(picArray, Base64.URL_SAFE);
