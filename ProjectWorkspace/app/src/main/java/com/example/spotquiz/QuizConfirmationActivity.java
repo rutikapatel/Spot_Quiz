@@ -44,8 +44,10 @@ public class QuizConfirmationActivity extends AppCompatActivity {
     static int camCode = 0;
     static int galCode = 1;
     String photo;
+    Boolean setImage = false;
     private FirebaseUser user;
     private DatabaseReference mDatabse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,15 +79,24 @@ public class QuizConfirmationActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QuizResult result = new QuizResult();
-                result.setQuizName(quiz.getQuizName());
-                result.setQuizId(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()+quiz.getProfessorId());
-                result.setImg(photo);
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                mDatabse = FirebaseDatabase.getInstance().getReference();
 
-                mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
+                if (setImage = true) {
+                    System.out.println("Image set");
+                    QuizResult result = new QuizResult();
+                    result.setQuizName(quiz.getQuizName());
+                    result.setQuizId(quiz.getQuizName() + quiz.getCourseName() + quiz.getQuizLocation().getName() + quiz.getProfessorId());
+                    result.setImg(photo);
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    mDatabse = FirebaseDatabase.getInstance().getReference();
 
+                    mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
+                    Intent i =  new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class);
+                    i.putExtra("quiz",quiz);
+                    startActivity(i);
+
+                } else {
+                    Toast.makeText(QuizConfirmationActivity.this, "Please take a photo or select an image in gallery", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -156,6 +167,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         imageView.setImageBitmap(selectedImage);
                         photo = convertToBase64(selectedImage);
+                        setImage = true;
                     }
                     break;
                 case 1:
@@ -166,6 +178,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                             bmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selImage);
                             imageView.setImageBitmap(bmap);
                             photo = convertToBase64(bmap);
+                            setImage = true;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
