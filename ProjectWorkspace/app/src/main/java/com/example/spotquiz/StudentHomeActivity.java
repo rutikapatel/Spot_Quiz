@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.spotquiz.adapters.QuizPastCardAdapter;
+import com.example.spotquiz.pojo.QuizResult;
 import com.example.spotquiz.pojo.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +39,7 @@ public class StudentHomeActivity extends AppCompatActivity {
     private String studentImage;
     private static final String TAG = "StudentHomeAcitivity";
     private FirebaseUser userID;
+    private ArrayList<QuizResult> arrayList;
     Users usr;
     Bitmap bmap = null;
 
@@ -50,20 +53,38 @@ public class StudentHomeActivity extends AppCompatActivity {
         btnquiz = findViewById(R.id.btnquiz);
         userID = FirebaseAuth.getInstance().getCurrentUser();
 
-        database = FirebaseDatabase.getInstance().getReference("Quizes");
-        final ArrayList<String> arrayList = new ArrayList<>();
+        database = FirebaseDatabase.getInstance().getReference("QuizResults");
+
 
         loadImage();
 
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrayList.clear();
+                arrayList = new ArrayList<>();
+                System.out.println("past"+dataSnapshot.getChildrenCount());
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String quiz = child.getValue(String.class);
-                    arrayList.add(quiz);
+                    System.out.println("past"+child.getKey());
+                    if(child.getKey().equalsIgnoreCase(userID.getUid()))
+                    for(DataSnapshot childData:child.getChildren()) {
+                        System.out.println("past"+childData.getValue());
+                        String img="";
+                        if(childData.child("quizId").getValue()!=null){
+                            img = childData.child("quizId").getValue().toString();
+                        }
+                        String result="";
+                                if(childData.child("result").getValue()!=null){
+                                    result = childData.child("result").getValue().toString();
+                                }
+
+                        QuizResult q = new QuizResult(childData.child("quizId").getValue().toString(),
+                                img,
+                                childData.child("quizName").getValue().toString(),
+                                result);
+                        arrayList.add(q);
+                    }
                 }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(StudentHomeActivity.this, android.R.layout.simple_list_item_1, arrayList);
+                QuizPastCardAdapter arrayAdapter = new QuizPastCardAdapter(StudentHomeActivity.this, arrayList);
                 listView.setAdapter(arrayAdapter);
             }
 
