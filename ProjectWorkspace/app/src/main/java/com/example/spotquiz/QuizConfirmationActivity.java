@@ -18,11 +18,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotquiz.pojo.Quiz;
+import com.example.spotquiz.pojo.QuizResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,12 +38,14 @@ public class QuizConfirmationActivity extends AppCompatActivity {
     private TextView quizName;
     private TextView eula;
     private ImageView imageView;
+    private Button confirm;
     static int PreqCode = 1;
     //  static int REQCODE = 1;
     static int camCode = 0;
     static int galCode = 1;
     String photo;
-
+    private FirebaseUser user;
+    private DatabaseReference mDatabse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +53,11 @@ public class QuizConfirmationActivity extends AppCompatActivity {
         quizName = findViewById(R.id.quizName);
         eula = findViewById(R.id.agreement);
         imageView = findViewById(R.id.imageView);
+        confirm = findViewById(R.id.btnConfirm);
 
         Intent intent = getIntent();
         quiz = (Quiz) intent.getSerializableExtra("quiz");
-        if (quiz != null) {
-            quizName.setText(quiz.getQuizName());
-        }
+
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +70,21 @@ public class QuizConfirmationActivity extends AppCompatActivity {
 
                     imageSelect(QuizConfirmationActivity.this);
                 }
+
+            }
+        });
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuizResult result = new QuizResult();
+                result.setQuizName(quiz.getQuizName());
+                result.setQuizId(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()+quiz.getProfessorId());
+                result.setImg(photo);
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabse = FirebaseDatabase.getInstance().getReference();
+
+                mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
 
             }
         });

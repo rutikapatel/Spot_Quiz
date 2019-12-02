@@ -74,7 +74,7 @@ public class QuizListCardAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 System.out.println("clicked");
-                Intent intent = new Intent(context, QuestionAnswerActivity.class);
+                Intent intent = new Intent(context, QuizConfirmationActivity.class);
                 intent.putExtra("quiz",q);
                 context.startActivity(intent);
 
