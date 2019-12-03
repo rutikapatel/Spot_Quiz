@@ -60,7 +60,7 @@ public class QuizListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_list);
-        location = findViewById(R.id.quizLocation);
+        //location = findViewById(R.id.quizLocation);
         quizList = findViewById(R.id.quizList);
         quizList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -127,7 +127,7 @@ public class QuizListActivity extends AppCompatActivity {
                             if (mLastKnownLocation != null) {
                                 Log.d(TAG, "Latitude: " + mLastKnownLocation.getLatitude());
                                 Log.d(TAG, "Longitude: " + mLastKnownLocation.getLongitude());
-                                location.setText(mLastKnownLocation.toString());
+                                //location.setText(mLastKnownLocation.toString());
                                 getQuiz();
                             }
                         } else {

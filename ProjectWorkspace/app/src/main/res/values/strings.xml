@@ -60,5 +60,5 @@
 
     <string name="txtTimer">%1$s : %2$s</string>
     <string name="instructions">SpotQuiz uses the photo only for the purpose of authentication.</string>
-    <string name="photoInstructions">Please click on the below image to click a photo</string>
+    <string name="photoInstructions">Please click on the below image to click/change a photo</string>
 </resources>

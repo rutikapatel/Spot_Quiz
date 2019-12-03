@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textSize="25dp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="end"
             />
 
 

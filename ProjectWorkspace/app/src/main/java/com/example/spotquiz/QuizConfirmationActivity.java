@@ -86,17 +86,22 @@ public class QuizConfirmationActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Boolean valid = true;
                 if (quizpin.getText().toString().isEmpty()) {
                     quizpin.setError("Please enter quiz pin shared by the professor to proceed further");
                     System.out.println("get text val" + quizpin.getText().toString());
-
-
+                    valid = false;
                 }
-              else  if ((!setImage)) {
+                if ((!setImage)) {
                     Toast.makeText(QuizConfirmationActivity.this, "Please take a photo or select an image in gallery by clicking the photo icon", Toast.LENGTH_LONG).show();
+                    valid = false;
+                }
+                if ( valid && !(quizpin.getText().toString().equalsIgnoreCase(quiz.getQuizKey()))){
+                    Toast.makeText(QuizConfirmationActivity.this, "Wrong pin", Toast.LENGTH_LONG).show();
+                    valid = false;
+                }
 
-                } else {
+                if(valid) {
                     System.out.println("Image set" + setImage);
                     QuizResult result = new QuizResult();
                     result.setQuizName(quiz.getQuizName());

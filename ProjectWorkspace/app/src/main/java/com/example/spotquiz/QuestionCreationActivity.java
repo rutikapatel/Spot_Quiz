@@ -59,7 +59,10 @@ public class QuestionCreationActivity extends AppCompatActivity {
         }
 
         noOfQuestions = Integer.parseInt(quiz.getNoOfQuestions());
+
+        questionNo.setText("Question " + (1)+ " of "+ noOfQuestions);
         gridView = findViewById(R.id.gridview);
+        gridView.setVisibility(View.INVISIBLE);
         ArrayList<Grid> numbers = new ArrayList<>();
         for(int j=0;j<noOfQuestions;j++){
             Grid g = new Grid();
@@ -80,6 +83,8 @@ public class QuestionCreationActivity extends AppCompatActivity {
 
         previous.setVisibility(View.INVISIBLE);
         ArrayList<Question> list = new ArrayList<>();
+
+        create.setVisibility(View.INVISIBLE);
 
 
         create.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +186,7 @@ public class QuestionCreationActivity extends AppCompatActivity {
                     Grid g = (Grid) nga.getItem(0);
                     g.change(ContextCompat.getColor(QuestionCreationActivity.this, R.color.colorGreen));
 
-                    questionNo.setText("Question" + (i + 1));
+                    questionNo.setText("Question " + (i + 1)+ " of "+ noOfQuestions);
 
                     try{
                         if (list.get(i) !=null) {
@@ -261,7 +266,7 @@ public class QuestionCreationActivity extends AppCompatActivity {
                 i--;
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorYellow));
-                questionNo.setText("Question"+ (i+1));
+                questionNo.setText("Question" + (i + 1)+ " of "+ noOfQuestions);
 
                 Question q = list.get(i);
                 question.setText(q.getQuestion());

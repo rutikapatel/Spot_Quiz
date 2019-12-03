@@ -253,7 +253,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
     private void startTimer(int quizLength)
     {
-        long startFrom = 1 * 60 * 1000;
+        long startFrom = quizLength * 60 * 1000;
 
         timer = new CountDownTimer(startFrom, 1000)
         {
