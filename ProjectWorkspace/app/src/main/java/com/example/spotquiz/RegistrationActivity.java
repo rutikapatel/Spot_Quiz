@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.spotquiz.pojo.Users;
@@ -60,6 +61,9 @@ public class RegistrationActivity extends AppCompatActivity {
     Uri selectedImage;
     private static final String LOG_TAG = "RegisterAct";
     String userID;
+    Boolean ui, setImage = false;
+    RadioGroup radioGroup;
+    int radiogrp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,9 @@ public class RegistrationActivity extends AppCompatActivity {
         professor = findViewById(R.id.professor);
         register = findViewById(R.id.btnregister);
         imgView = findViewById(R.id.imageView);
+        radioGroup = findViewById(R.id.radioBtnGrp);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        student.setChecked(true);
 
 
         imgView.setOnClickListener(new View.OnClickListener() {
@@ -97,24 +103,64 @@ public class RegistrationActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ui = false;
+                radiogrp = radioGroup.getCheckedRadioButtonId();
+
                 // Edittext validation
-                if (name.getText().toString().isEmpty() || email.getText().toString().isEmpty()
-                        || password.getText().toString().isEmpty() || dalId.getText().toString().isEmpty()
-                        || !(student.isChecked() || professor.isChecked()) || imgView.getDrawable().getConstantState() == null) {
-
-
+                if (name.getText().toString().isEmpty()) {
                     name.setError("Please enter your name");
+                    ui = true;
+
+                }
+                if (email.getText().toString().isEmpty()) {
                     email.setError("Please enter your E-Mail ID");
+                    ui = true;
+
+                }
+                if (password.getText().toString().isEmpty()) {
                     password.setError("Please enter the password");
+                    ui = true;
+                }
+                if (dalId.getText().toString().isEmpty()) {
                     dalId.setError("Please enter your dalhousie ID");
-                    student.setError("Please select student if applicable");
-                    professor.setError("Please select professor if applicable");
+                    ui = true;
+                }
+
+/*                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        System.out.println("radio group called");
+                        if(checkedId==R.id.student){
+                            System.out.println("checking button");
+                            student.setText("selected");
+
+
+                        }
+                        else if(checkedId==R.id.professor){
+                            System.out.println("checking prof button");
+                            professor.setText("selected");
+                        }
+                    }
+                });*/
+
+   /*            if (radiogrp == -1) {
+                   student.setError("Please select student if applicable");
+                   professor.setError("Please select professor if applicable");professor.setError("Please select professor if applicable");
+                   ui = true;
+
+
+                }*/
+                if (!setImage) {
                     Toast.makeText(RegistrationActivity.this, "Select an profile image", Toast.LENGTH_SHORT).show();
+                    ui = true;
+
+                }
 
 
-                } else {
+                if (!ui) {
                     //Registering as student
-                    if (student.isChecked() == true) {
+                    if (student.isChecked()) {
+                        System.out.println("student checked");
                         studnt = student.isChecked();
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
@@ -125,8 +171,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 name.getText().toString(), studnt, prof, photo);
                     }
                     //Registering as professor
-                    else if (professor.isChecked() == true) {
-
+                    if (professor.isChecked()) {
+                        System.out.println("student checked");
                         studnt = student.isChecked();
                         prof = professor.isChecked();
                         System.out.println("student button" + studnt);
@@ -210,8 +256,8 @@ public class RegistrationActivity extends AppCompatActivity {
         selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
 
         byte[] picArray = outstream.toByteArray();
+        setImage = true;
 
-        // System.out.println("base64 string is" + Base64.encodeToString(picArray, Base64.URL_SAFE));
         return Base64.encodeToString(picArray, Base64.URL_SAFE);
 
 
@@ -255,8 +301,8 @@ public class RegistrationActivity extends AppCompatActivity {
                             //  Log.d(LOG_TAG,"TAG",+ task.isSuccessful());
                             FirebaseUser user = mAuth.getCurrentUser();
                             userID = mAuth.getUid();
-                            System.out.println("uid is" +userID);
-                            userProfileCreation(name, mail, dalId, studnt, prof, photo,userID);
+                            System.out.println("uid is" + userID);
+                            userProfileCreation(name, mail, dalId, studnt, prof, photo, userID);
                             Toast.makeText(RegistrationActivity.this, "Registration Success",
                                     Toast.LENGTH_LONG).show();
                             System.out.println("Registration  is successful");
@@ -276,7 +322,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     //Setting values based on user type
     protected void userProfileCreation(String name, String email, String dalId,
-                                       final boolean studnt, final boolean prof, String profilePhoto,String userID) {
+                                       final boolean studnt, final boolean prof, String profilePhoto, String userID) {
         Users user = new Users();
         user.setEmail(email);
         user.setName(name);
