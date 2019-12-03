@@ -22,7 +22,8 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QuestionCreationActivity"></activity>
+        <activity android:name=".StudentResultsActivity"></activity>
+        <activity android:name=".QuestionCreationActivity" />
         <activity android:name=".QuizConfirmationActivity" />
         <activity android:name=".QuizListActivity" />
         <!--
@@ -41,12 +42,13 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/MapTheme" />
-        <activity android:name=".QuizResultActivity"/>
-        <activity android:name=".QuestionAnswerActivity"/>
+        <activity android:name=".QuizResultActivity" />
+        <activity android:name=".QuestionAnswerActivity" />
         <activity android:name=".QuizCreationActivity" />
         <activity android:name=".ProfessorHomeActivity" />
         <activity android:name=".StudentHomeActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

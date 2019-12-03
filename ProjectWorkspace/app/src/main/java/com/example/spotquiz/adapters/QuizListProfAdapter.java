@@ -78,7 +78,7 @@ import java.util.ArrayList;
             Quiz q = (Quiz) this.getItem(position);
             name.setText(q.getQuizName());
             location.setText(q.getQuizLocation().getName());
-            date.setText(q.getQuizStartTime());
+            date.setText(q.getQuizDate());
             mDatabse = FirebaseDatabase.getInstance().getReference("quizzes");
             if(q.getActive()!= null && q.getActive()){
                 activate.setText("De-Activate");
@@ -95,6 +95,16 @@ import java.util.ArrayList;
                     mDatabse.child(q.getQuizName()+q.getCourseName()+q.getQuizLocation().getName()+q.getProfessorId()).setValue(q);
                 }
             });
+
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("adapter clicked");
+
+                }
+            });
+
+
             return convertView;
         }
 

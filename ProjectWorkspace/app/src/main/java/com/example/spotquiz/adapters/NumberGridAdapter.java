@@ -52,7 +52,7 @@ public class NumberGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         TextView name = new TextView(context);
-        name.setText(String.valueOf(position));
+        name.setText(String.valueOf(position+1));
         name.setBackgroundColor(ContextCompat.getColor(context,R.color.colorGrey));
 
         listNumber.get(position).setOnQuestionChange(new QuestionChangeListener() {

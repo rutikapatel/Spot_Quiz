@@ -165,7 +165,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
     }
 
     public void imageSelect(Context context) {
-        final CharSequence[] opt = {"Take Photo", "Choose from Gallery", "Cancel"};
+        final CharSequence[] opt = {"Take Photo", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose image for profile");

@@ -233,15 +233,18 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 radioButton = findViewById(selectedId);
+                givenans[i] = radioGroup.indexOfChild(radioButton);
+
                 int markcount = 0;
                 for(int j=0; j<5; j++)
                 {
-                    if(givenans[j]==correctans.get(j)) markcount++;
+                    if(givenans[j]!=-1 &&givenans[j]== correctans.get(j)-1) markcount++;
                     System.out.println(givenans[0]);
                     System.out.println(correctans.get(0));
                 }
                 result.setResult(String.valueOf(markcount));
                 mDatabase.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
+                timer.cancel();
                 Intent i =  new Intent(QuestionAnswerActivity.this, QuizResultActivity.class);
                 i.putExtra("result",result);
                 startActivity(i);
