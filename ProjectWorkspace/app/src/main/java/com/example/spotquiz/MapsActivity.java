@@ -118,12 +118,16 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
         mPlacesClient = Places.createClient(this);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+
+        Intent intent = getIntent();
+        q = (Quiz) intent.getSerializableExtra("quiz");
         //Selecct location
         selectLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),QuizCreationActivity.class);
                 intent.putExtra("location",quizLocation);
+                intent.putExtra("quiz",q);
                 startActivity(intent);
 
             }

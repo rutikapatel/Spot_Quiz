@@ -148,8 +148,18 @@ public class QuizCreationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         selectedLocation = (QuizLocation) intent.getSerializableExtra("location");
+        Quiz q = (Quiz) intent.getSerializableExtra("quiz");
         if (selectedLocation != null) {
             quizLocation.setText(selectedLocation.getName());
+        }
+        if(q != null){
+            quizName.setText(q.getQuizName());
+            course.setText(q.getCourseName());
+            quizKey.setText(q.getQuizKey());
+            quizDate.setText(q.getQuizDate());
+            quizTime.setText(q.getQuizStartTime());
+
+
         }
 
 
