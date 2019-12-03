@@ -84,25 +84,45 @@ public class QuestionCreationActivity extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Question q = new Question();
-                q.setQuestion(question.getText().toString());
+                Boolean valid = true;
+                if( question.getText().toString().isEmpty() ){
+                    question.setError("Please enter your question");
+                    valid = false;
+                }if( option1.getText().toString().isEmpty() ){
+                    option1.setError("Please enter this option");
+                    valid = false;
+                }if( option2.getText().toString().isEmpty() ){
+                    option2.setError("Please enter this option");
+                    valid = false;
+                } if( option3.getText().toString().isEmpty() ){
+                    option3.setError("Please enter this option");
+                    valid = false;
+                } if( option4.getText().toString().isEmpty() ){
+                    option4.setError("Please enter this option");
+                    valid = false;
+                }if(valid) {
+                    Question q = new Question();
+                    q.setQuestion(question.getText().toString());
 
-                ArrayList<String> options = new ArrayList<>();
-                options.add(option1.getText().toString());
-                options.add(option2.getText().toString());
-                options.add(option3.getText().toString());
-                options.add(option4.getText().toString());
-                q.setOptions(options);
+                    ArrayList<String> options = new ArrayList<>();
+                    options.add(option1.getText().toString());
+                    options.add(option2.getText().toString());
+                    options.add(option3.getText().toString());
+                    options.add(option4.getText().toString());
+                    q.setOptions(options);
 
-                q.setCorrectAnswer(Integer.parseInt(answer.getSelectedItem().toString()));
+                    q.setCorrectAnswer(Integer.parseInt(answer.getSelectedItem().toString()));
 
-                list.add(q);
+                    list.add(q);
 
-                quiz.setQuestions(list);
-              //  mDatabase.child("Questions").child("quiz1").setValue(list);
-                mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()+quiz.getProfessorId()).setValue(quiz);
+                    quiz.setQuestions(list);
+                    //  mDatabase.child("Questions").child("quiz1").setValue(list);
+                    mDatabase.child("quizzes").child(quiz.getQuizName() + quiz.getCourseName() + quiz.getQuizLocation().getName() + quiz.getProfessorId()).setValue(quiz);
+                    startActivity(new Intent(QuestionCreationActivity.this, ProfessorHomeActivity.class));
+                    finish();
 
-                Toast.makeText(QuestionCreationActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
+                  //  Toast.makeText(QuestionCreationActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
+                }
             }
         });
 
@@ -110,51 +130,106 @@ public class QuestionCreationActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Question q = new Question();
-                q.setQuestion(question.getText().toString());
-
-                ArrayList<String> options = new ArrayList<>();
-                options.add(option1.getText().toString());
-                options.add(option2.getText().toString());
-                options.add(option3.getText().toString());
-                options.add(option4.getText().toString());
-                q.setOptions(options);
-
-                q.setCorrectAnswer(Integer.parseInt(answer.getSelectedItem().toString()));
-
-                list.add(q);
-                Grid h = (Grid) nga.getItem(i);
-                h.setFinished(true);
-                h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorGreen));
-                i++;
-                h = (Grid) nga.getItem(i);
-                h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorYellow));
-
-                Grid g = (Grid) nga.getItem(0);
-                g.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorGreen));
-
-                questionNo.setText("Question"+ (i+1));
-                question.getText().clear();
-                option1.getText().clear();
-                option2.getText().clear();
-                option3.getText().clear();
-                option4.getText().clear();
-                answer.setSelection(0);
-
-                question.requestFocus();
-                System.out.println(i);
-                System.out.print(noOfQuestions);
-                if(noOfQuestions == (i+1)){
-                    System.out.println("end");
-                    next.setVisibility(View.INVISIBLE);
+                Boolean valid = true;
+                if( question.getText().toString().isEmpty() ){
+                    question.setError("Please enter your question");
+                    valid = false;
+                }if( option1.getText().toString().isEmpty() ){
+                    option1.setError("Please enter this option");
+                    valid = false;
+                }if( option2.getText().toString().isEmpty() ){
+                    option2.setError("Please enter this option");
+                    valid = false;
+                } if( option3.getText().toString().isEmpty() ){
+                    option3.setError("Please enter this option");
+                    valid = false;
+                } if( option4.getText().toString().isEmpty() ){
+                    option4.setError("Please enter this option");
+                    valid = false;
                 }
 
-                previous.setVisibility(View.VISIBLE);
+                if(valid) {
+                    Question q = new Question();
+                    q.setQuestion(question.getText().toString());
+
+                    ArrayList<String> options = new ArrayList<>();
+                    options.add(option1.getText().toString());
+                    options.add(option2.getText().toString());
+                    options.add(option3.getText().toString());
+                    options.add(option4.getText().toString());
+                    q.setOptions(options);
+
+                    q.setCorrectAnswer(Integer.parseInt(answer.getSelectedItem().toString()));
+
+                    try {
+                        if (list.get(i) !=null) {
+                            Question  temp = list.get(i);
+                            temp =q;
+                        }
+                    }catch(IndexOutOfBoundsException e){
+                        list.add(q);
+                    }
+
+                    Grid h = (Grid) nga.getItem(i);
+                    h.setFinished(true);
+                    h.change(ContextCompat.getColor(QuestionCreationActivity.this, R.color.colorGreen));
+                    i++;
+                    h = (Grid) nga.getItem(i);
+                    h.change(ContextCompat.getColor(QuestionCreationActivity.this, R.color.colorYellow));
+
+                    Grid g = (Grid) nga.getItem(0);
+                    g.change(ContextCompat.getColor(QuestionCreationActivity.this, R.color.colorGreen));
+
+                    questionNo.setText("Question" + (i + 1));
+
+                    try{
+                        if (list.get(i) !=null) {
+                            Question p = list.get(i);
+                            question.setText(p.getQuestion());
+                            option1.setText(p.getOptions().get(0));
+                            option2.setText(p.getOptions().get(1));
+                            option3.setText(p.getOptions().get(2));
+                            option4.setText(p.getOptions().get(3));
+                            answer.setSelection(p.getCorrectAnswer()-1);
+                        }
+                    }catch(IndexOutOfBoundsException e){
+                        question.getText().clear();
+                        option1.getText().clear();
+                        option2.getText().clear();
+                        option3.getText().clear();
+                        option4.getText().clear();
+                        answer.setSelection(0);
+                    }
+                    /*if(list.get(i)==null) {
+                        Question p = list.get(i);
+                        question.setText(p.getQuestion());
+                        option1.setText(p.getOptions().get(0));
+                        option2.setText(p.getOptions().get(1));
+                        option3.setText(p.getOptions().get(2));
+                        option4.setText(p.getOptions().get(3));
+                        answer.setSelection(p.getCorrectAnswer()-1);
+                    }else {
+                        question.getText().clear();
+                        option1.getText().clear();
+                        option2.getText().clear();
+                        option3.getText().clear();
+                        option4.getText().clear();
+                        answer.setSelection(0);
+                    }*/
+                    question.requestFocus();
+                    System.out.println(i);
+                    System.out.print(noOfQuestions);
+                    if (noOfQuestions == (i + 1)) {
+                        System.out.println("end");
+                        create.setVisibility(View.VISIBLE);
+                        next.setVisibility(View.INVISIBLE);
+                    }
+
+                    previous.setVisibility(View.VISIBLE);
 
 
-
-                Toast.makeText(QuestionCreationActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
+                    Toast.makeText(QuestionCreationActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
+                }
             }
         });
 
@@ -167,8 +242,12 @@ public class QuestionCreationActivity extends AppCompatActivity {
                     previous.setVisibility(View.INVISIBLE);
                 }
                 if(noOfQuestions == (i+1)){
+                    create.setVisibility(View.INVISIBLE);
                     next.setVisibility(View.VISIBLE);
                 }
+
+
+
                 Grid h = (Grid) nga.getItem(i);
                 System.out.println("objchk"+h.getFinished());
                 if(  h.getFinished()!=null && h.getFinished() ){

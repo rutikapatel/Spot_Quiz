@@ -264,13 +264,72 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
     }
 
     private void getCurrentPlaceSuggestions() throws JSONException {
+        int count=0;
+        mLikelyPlaceNames = new String[count];
+        mLikelyPlaceAddresses = new String[count];
+        mLikelyPlaceAttributions = new String[count];
+        mLikelyPlaceLatLngs = new LatLng[count];
         String json =  getResources().getString(R.string.suggested_buildings);
         JSONObject jsonObj = new JSONObject(json);
-        JSONArray contacts = jsonObj.getJSONArray("weather");
-        for(int i =0;i<contacts.length();i++){
-            JSONObject c = contacts.getJSONObject(i);
-//            Log.e(TAG, c.getString("name"));
+        JSONArray build = jsonObj.getJSONArray("buildings");
+        for(int i =0;i<build.length();i++){
+            JSONObject b = build.getJSONObject(i);
+           Log.e("jsonmap", b.getString("name"));
+            /*mLikelyPlaceNames[i] = b.getString("name");
+            mLikelyPlaceAddresses[i] =  b.getString("name");
+            mLikelyPlaceAttributions[i] = null;
+            Double lat =  Double.parseDouble(b.getString("lat"));
+            Double lon =  Double.parseDouble(b.getString("lon"));
+            LatLng l = new LatLng(lat,lon);
+            mLikelyPlaceLatLngs[i] = l;*/
         }
+
+        mLikelyPlaceNames[count] = "Tupper building";
+        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceAttributions[count] = null;
+        Double lat = 44.639550;
+        Double lon = -63.583717;
+        LatLng l = new LatLng(lat,lon);
+        mLikelyPlaceLatLngs[count] = l;
+        count ++;
+
+        mLikelyPlaceNames[count] = "Mona Campbell";
+        mLikelyPlaceAddresses[count] = "Mona Campbell";
+        mLikelyPlaceAttributions[count] = null;
+        lat = 44.639550;
+        lon = -63.583717;
+        LatLng l = new LatLng(lat,lon);
+        mLikelyPlaceLatLngs[count] = l;
+        count ++;
+
+        mLikelyPlaceNames[count] = "Tupper building";
+        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceAttributions[count] = null;
+        lat = 44.639550;
+        lon = -63.583717;
+        LatLng l = new LatLng(lat,lon);
+        mLikelyPlaceLatLngs[count] = l;
+        count ++;
+
+        mLikelyPlaceNames[count] = "Tupper building";
+        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceAttributions[count] = null;
+        lat = 44.639550;
+        lon = -63.583717;
+        LatLng l = new LatLng(lat,lon);
+        mLikelyPlaceLatLngs[count] = l;
+        count ++;
+
+        mLikelyPlaceNames[count] = "Tupper building";
+        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceAttributions[count] = null;
+        lat = 44.639550;
+        lon = -63.583717;
+        LatLng l = new LatLng(lat,lon);
+        mLikelyPlaceLatLngs[count] = l;
+
+
+
     }
 
     private void getDeviceLocation() {

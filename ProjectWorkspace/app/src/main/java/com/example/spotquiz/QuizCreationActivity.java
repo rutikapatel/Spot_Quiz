@@ -207,6 +207,7 @@ public class QuizCreationActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), QuestionCreationActivity.class);
         intent.putExtra("quiz", quiz);
         startActivity(intent);
+        finish();
         // mDatabase.child("quizzes").child(quiz.getQuizName()+quiz.getCourseName()+quiz.getQuizLocation().getName()).setValue(quiz);
     }
 

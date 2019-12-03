@@ -28,19 +28,28 @@
 
 
     <string name="suggested_buildings">
-        {"weather":[
-      {
-         "id":711,
-         "main":"Smoke",
-         "description":"smoke",
-         "icon":"50n"
-      },{
-         "id":711,
-         "main":"Smoke",
-         "description":"smoke",
-         "icon":"50n"
-      }
-   ]}
+        {"buildings":[{
+                "name":"Tupper Building",
+                "lat":"44.639550",
+                "lon":"-63.583717"
+            },{
+                "name":"Mona Campbell",
+                "lat":"44.639550",
+                "lon":"-63.583717"
+            },{
+                "name":"Henry Hicks Building",
+                "lat":"44.639550",
+                "lon":"-63.583717"
+            },{
+                "name":"CHEB",
+                "lat":"44.639550",
+                "lon":"-63.583717"
+            },{
+                "name":"Student union Building",
+                "lat":"44.639550",
+                "lon":"-63.583717"
+            }
+        ]}
     </string>
     <string-array name="answer">
         <item>1</item>
