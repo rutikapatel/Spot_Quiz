@@ -375,7 +375,9 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                                                     json = jsonArray.getJSONObject(0);
                                                     String address = json.get("formatted_address").toString();
                                                     System.out.println("address"+address);
-
+                                                    if(marker != null){
+                                                        marker.remove();
+                                                    }
                                                     marker =  mMap.addMarker(new MarkerOptions()
                                                             .title(address)
                                                             .position( new LatLng(mLastKnownLocation.getLatitude(),
@@ -473,7 +475,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
 
             // Position the map's camera at the location of the marker.
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(markerLatLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng,DEFAULT_ZOOM));
             quizLocation.setName(mLikelyPlaceNames[position]);
             quizLocation.setLatitude(markerLatLng.latitude);
             quizLocation.setLongitude(markerLatLng.longitude);
