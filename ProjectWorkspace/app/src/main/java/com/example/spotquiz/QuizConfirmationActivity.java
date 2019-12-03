@@ -106,6 +106,7 @@ public class QuizConfirmationActivity extends AppCompatActivity {
                     mDatabse.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
                     Intent i = new Intent(QuizConfirmationActivity.this, QuestionAnswerActivity.class);
                     i.putExtra("quiz", quiz);
+                    i.putExtra("result",result);
                     startActivity(i);
 
 

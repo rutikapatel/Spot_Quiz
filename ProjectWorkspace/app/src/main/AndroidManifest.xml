@@ -41,6 +41,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/MapTheme" />
+        <activity android:name=".QuizResultActivity"/>
         <activity android:name=".QuestionAnswerActivity"/>
         <activity android:name=".QuizCreationActivity" />
         <activity android:name=".ProfessorHomeActivity" />

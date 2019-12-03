@@ -20,6 +20,10 @@ import com.example.spotquiz.adapters.Grid;
 import com.example.spotquiz.adapters.NumberGridAdapter;
 import com.example.spotquiz.pojo.Question;
 import com.example.spotquiz.pojo.Quiz;
+
+import com.example.spotquiz.pojo.QuizResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -32,6 +36,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private Button next, previous, submit;
     int i = 0;
     private DatabaseReference mDatabase;
+    private FirebaseUser user;
     private NumberGridAdapter nga;
     private GridView gridView;
     private TextView txtTimer;
@@ -39,8 +44,9 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private ArrayList<String> quesnum = new ArrayList<>();
     private ArrayList<String> quesdesc = new ArrayList<>();
     private ArrayList<ArrayList<String>> quesopt = new ArrayList<>();
-    private ArrayList<String> correctans = new ArrayList<>();
-    private String givenans[] = new String[15];
+    private ArrayList<Integer> correctans = new ArrayList<>();
+    private Integer givenans[] = new Integer[15];
+    private int noOfQuestions;
 
     private RadioButton radioButton;
     private RadioGroup radioGroup;
@@ -49,6 +55,7 @@ public class QuestionAnswerActivity extends AppCompatActivity {
     private long minutes, seconds = 0;
 
     private Quiz sq;
+    private QuizResult result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +76,28 @@ public class QuestionAnswerActivity extends AppCompatActivity {
         txtTimer = findViewById(R.id.timer);
 
         gridView = findViewById(R.id.gridview);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        Intent intent = getIntent();
+        sq  = (Quiz)intent.getSerializableExtra("quiz");
+        result = (QuizResult) intent.getSerializableExtra("result");
+
+
+        ArrayList<Question> questions = sq.getQuestions();
+
+        for(int j = 0;j<questions.size();j++){
+            quesnum.add(Integer.toString(j));
+            quesdesc.add(questions.get(j).getQuestion());
+            correctans.add(questions.get(j).getCorrectAnswer());
+            quesopt.add(questions.get(j).getOptions());
+            givenans[j]= -1 ;
+        }
+        noOfQuestions = Integer.parseInt(sq.getNoOfQuestions());
         ArrayList<Grid> numbers = new ArrayList<>();
 
-        for(int j=0;j<10;j++)
+        for(int j=0;j<noOfQuestions;j++)
         {
             Grid g = new Grid();
             g.setNumber(i+1);
@@ -84,74 +110,19 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
         Grid h = (Grid) nga.getItem(0);
         h.change(ContextCompat.getColor(this,R.color.colorYellow));
-        mDatabase = FirebaseDatabase.getInstance().getReference("quizzes");
+
 
         previous.setVisibility(View.INVISIBLE);
 
-        startTimer();
+        startTimer(Integer.parseInt(sq.getQuizLength()));
 
-       /* mDatabase.equalTo("Quiz1").addValueEventListener(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
-                        for(DataSnapshot childData : dataSnapshot.getChildren())
-                        {
-
-                                for(int j = 0; j < childData.getChildrenCount(); j++)
-                                {
-                                    String index = Integer.toString(j);
-                                    quesnum.add(index);
-                                    quesdesc.add(childData.child(index).child("question").getValue().toString());
-//                                    if(childData.child(index).child("type").getValue().toString() == "MCQ")
-//                                    {
-                                        for(int k=0; k<4; k++)
-                                        {
-                                            ArrayList<String> option = new ArrayList<>();
-                                            String optindex = Integer.toString(k);
-                                            option.add(childData.child(index).child("options").child(optindex).getValue().toString());
-                                            quesopt.add(option);
-                                        }
-//                                    }
-                                    correctans.add(childData.child(index).child("correctAnswer").getValue().toString());
-                                }
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });*/
-                Intent intent = getIntent();
-                sq  = (Quiz)intent.getSerializableExtra("quiz");
-
-
-
-                ArrayList<Question> questions = sq.getQuestions();
-
-                for(int j = 0;j<questions.size();j++){
-                    quesnum.add(Integer.toString(j));
-                    quesdesc.add(questions.get(j).getQuestion());
-                    correctans.add(Integer.toString(questions.get(j).getCorrectAnswer()));
-                    quesopt.add(questions.get(j).getOptions());
-
-                }
-
-
-
-                q_number.setText(Integer.toString(Integer.parseInt(quesnum.get(i)) + 1));
-                q_description.setText(quesdesc.get(i));
-                option_1.setText(quesopt.get(i).get(0));
-                option_2.setText(quesopt.get(i).get(1));
-                option_3.setText(quesopt.get(i).get(2));
-                option_4.setText(quesopt.get(i).get(3));
-
-                //int selectedId = radioGroup.getCheckedRadioButtonId();
-                //radioButton = findViewById(selectedId);
-                //givenans[i] = radioButton.getText().toString();
-
-
+        q_number.setText(Integer.toString(Integer.parseInt(quesnum.get(i)) + 1));
+        q_description.setText(quesdesc.get(i));
+        option_1.setText(quesopt.get(i).get(0));
+        option_2.setText(quesopt.get(i).get(1));
+        option_3.setText(quesopt.get(i).get(2));
+        option_4.setText(quesopt.get(i).get(3));
+        radioButton = findViewById(0);
 
 
         next.setOnClickListener(new View.OnClickListener()
@@ -159,18 +130,30 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-
                 Grid h = (Grid) nga.getItem(i);
-                h.setFinished(true);
-                h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorGreen));
+
+
+
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(selectedId);
+                System.out.println("id"+radioGroup.indexOfChild(radioButton));
+
+                if(selectedId != -1) {
+                    h.setFinished(true);
+                    h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorGreen));
+                    givenans[i] = radioGroup.indexOfChild(radioButton);
+                }else{
+                    h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorGrey));
+                }
+
                 i++;
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorYellow));
 
-                if (i>1) radioButton.setChecked(false);
+                radioGroup.clearCheck();
 
                 previous.setVisibility(View.VISIBLE);
-                if(i==4) next.setVisibility(View.INVISIBLE);
+                if(i==noOfQuestions-1) next.setVisibility(View.INVISIBLE);
 
                 q_number.setText((Integer.toString(Integer.parseInt(quesnum.get(i)) + 1)));
                 q_description.setText(quesdesc.get(i));
@@ -179,9 +162,11 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 option_3.setText(quesopt.get(i).get(2));
                 option_4.setText(quesopt.get(i).get(3));
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                radioButton = findViewById(selectedId);
-                givenans[i] = radioButton.getText().toString();
+                if(givenans[i] != -1){
+                    radioButton = (RadioButton) radioGroup.getChildAt(givenans[i]);
+                    radioButton.setChecked(true);
+                }
+
 
 //                Toast.makeText(QuestionAnswerActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
             }
@@ -198,18 +183,31 @@ public class QuestionAnswerActivity extends AppCompatActivity {
 
                 System.out.println("objchk"+h.getFinished());
 
-                if(  h.getFinished()!=null && h.getFinished() ){
-                    h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorGreen));
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(selectedId);
+
+
+
+                if(selectedId != -1){
+                    h.setFinished(true);
+                    h.change(ContextCompat.getColor(QuestionAnswerActivity.this, R.color.colorGreen));
+                    givenans[i] = radioGroup.indexOfChild(radioButton);
                 }else{
                     h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorGrey));
                 }
+                if(  h.getFinished()!=null && h.getFinished() ){
+                   // h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorGreen));
+                }else{
+                    h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorGrey));
+                }
+                radioGroup.clearCheck();
                 i--;
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionAnswerActivity.this,R.color.colorYellow));
 
                 next.setVisibility(View.VISIBLE);
                 if(i==0) previous.setVisibility(View.INVISIBLE);
-                else previous.setVisibility(View.VISIBLE);
+
 
                 q_number.setText((Integer.toString(Integer.parseInt(quesnum.get(i)) + 1)));
                 q_description.setText(quesdesc.get(i));
@@ -218,30 +216,44 @@ public class QuestionAnswerActivity extends AppCompatActivity {
                 option_3.setText(quesopt.get(i).get(2));
                 option_4.setText(quesopt.get(i).get(3));
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                radioButton = findViewById(selectedId);
-                givenans[i] = radioButton.getText().toString();
+                if(givenans[i] != -1){
+                    radioButton = (RadioButton) radioGroup.getChildAt(givenans[i]);
+                    radioButton.setChecked(true);
+                }
+
+
+
 
 //                Toast.makeText(QuestionAnswerActivity.this, list.get(0).getQuestion(), Toast.LENGTH_SHORT);
             }
         });
 
-//        submit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int markcount = 0;
-//                for(int j=0; j<5; j++)
-//                {
-//                    if(givenans[j].equalsIgnoreCase(correctans.get(j))) markcount++;
-//                }
-//
-//            }
-//        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(selectedId);
+                int markcount = 0;
+                for(int j=0; j<5; j++)
+                {
+                    if(givenans[j]==correctans.get(j)) markcount++;
+                    System.out.println(givenans[0]);
+                    System.out.println(correctans.get(0));
+                }
+                result.setResult(String.valueOf(markcount));
+                mDatabase.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
+                Intent i =  new Intent(QuestionAnswerActivity.this, QuizResultActivity.class);
+                i.putExtra("result",result);
+                startActivity(i);
+                finish();
+                System.out.println(markcount);
+            }
+        });
     }
 
-    private void startTimer()
+    private void startTimer(int quizLength)
     {
-        long startFrom = 600000;
+        long startFrom = 1 * 60 * 1000;
 
         timer = new CountDownTimer(startFrom, 1000)
         {
@@ -258,6 +270,22 @@ public class QuestionAnswerActivity extends AppCompatActivity {
             {
                 setTxtTimerValue(0);
                 Toast.makeText(getApplicationContext(), "Finished", Toast.LENGTH_SHORT).show();
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                radioButton = findViewById(selectedId);
+                int markcount = 0;
+                for(int j=0; j<5; j++)
+                {
+                    if(givenans[j]==correctans.get(j)) markcount++;
+                    System.out.println(givenans[0]);
+                    System.out.println(correctans.get(0));
+                }
+                result.setResult(String.valueOf(markcount));
+                mDatabase.child("QuizResults").child(user.getUid()).child(result.getQuizId()).setValue(result);
+                Intent i =  new Intent(QuestionAnswerActivity.this, QuizResultActivity.class);
+                i.putExtra("result",result);
+                startActivity(i);
+                finish();
+
             }
         }.start();
     }

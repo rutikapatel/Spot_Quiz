@@ -58,11 +58,13 @@ public class NumberGridAdapter extends BaseAdapter {
         listNumber.get(position).setOnQuestionChange(new QuestionChangeListener() {
             @Override
             public void onQuestionChange(int color) {
+                System.out.println("colorChange"+color+"posotio"+position);
                 name.setBackgroundColor(color);
                 if(color == ContextCompat.getColor(context,R.color.colorYellow)){
                     if(position!=0)
                     listNumber.get(position-1).setFinished(true);
                 }
+
             }
         });
         return name;

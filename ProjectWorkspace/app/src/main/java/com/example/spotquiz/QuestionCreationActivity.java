@@ -34,7 +34,7 @@ public class QuestionCreationActivity extends AppCompatActivity {
     private NumberGridAdapter nga;
     private GridView gridView;
     private Quiz quiz;
-
+    int noOfQuestions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class QuestionCreationActivity extends AppCompatActivity {
             quizName.setText(quiz.getQuizName());
         }
 
-        int noOfQuestions = Integer.parseInt(quiz.getNoOfQuestions());
+        noOfQuestions = Integer.parseInt(quiz.getNoOfQuestions());
         gridView = findViewById(R.id.gridview);
         ArrayList<Grid> numbers = new ArrayList<>();
         for(int j=0;j<noOfQuestions;j++){
@@ -129,6 +129,9 @@ public class QuestionCreationActivity extends AppCompatActivity {
                 h = (Grid) nga.getItem(i);
                 h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorYellow));
 
+                Grid g = (Grid) nga.getItem(0);
+                g.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorGreen));
+
                 questionNo.setText("Question"+ (i+1));
                 question.getText().clear();
                 option1.getText().clear();
@@ -138,6 +141,12 @@ public class QuestionCreationActivity extends AppCompatActivity {
                 answer.setSelection(0);
 
                 question.requestFocus();
+                System.out.println(i);
+                System.out.print(noOfQuestions);
+                if(noOfQuestions == (i+1)){
+                    System.out.println("end");
+                    next.setVisibility(View.INVISIBLE);
+                }
 
                 previous.setVisibility(View.VISIBLE);
 
@@ -155,12 +164,17 @@ public class QuestionCreationActivity extends AppCompatActivity {
                 if(i==1){
                     previous.setVisibility(View.INVISIBLE);
                 }
+                if(noOfQuestions == (i+1)){
+                    next.setVisibility(View.VISIBLE);
+                }
                 Grid h = (Grid) nga.getItem(i);
                 System.out.println("objchk"+h.getFinished());
                 if(  h.getFinished()!=null && h.getFinished() ){
                     h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorGreen));
                 }else{
                     h.change(ContextCompat.getColor(QuestionCreationActivity.this,R.color.colorGrey));
+
+
                 }
                 i--;
                 h = (Grid) nga.getItem(i);
