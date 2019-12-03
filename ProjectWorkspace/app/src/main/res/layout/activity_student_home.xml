@@ -7,47 +7,30 @@
     tools:context=".StudentHomeActivity">
 
 
-    <LinearLayout
-        android:id="@+id/imglayout"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="90dp">
     <ImageView
         android:id="@+id/imageView"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/name"
+        app:srcCompat="@drawable/userprofilephoto" />
+    <Button
+        android:id="@+id/btnquiz"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/userprofilephoto"
-        android:contentDescription="@string/name" />
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_below="@id/imglayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/student_home"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"/>
-
-        <Button
-            android:id="@+id/btnquiz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/take_quiz" />
-
-    </LinearLayout>
+        android:text="@string/take_quiz"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView"/>
 
 
     <ListView
         android:id="@+id/list"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear"/>
+        android:layout_below="@+id/btnquiz"/>
 
 </RelativeLayout>
+
