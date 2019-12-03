@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     int pauseit = 0;
-                    while (pauseit< 3500) {
+                    while (pauseit< 1200) {
                         try{
                         sleep(100);} catch (InterruptedException e) {
                             e.printStackTrace();

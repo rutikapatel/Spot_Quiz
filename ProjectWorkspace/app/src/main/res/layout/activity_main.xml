@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#EAF1FD">
 
     <ImageView
         android:id="@+id/icon"
@@ -13,7 +14,6 @@
         android:layout_centerInParent="true"
         android:src="@drawable/icon"
         tools:ignore="MissingConstraints">
-
     </ImageView>
 
 <!--    <TextView-->
