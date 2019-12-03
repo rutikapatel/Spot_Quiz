@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:layout_centerHorizontal="true"
-            android:text="Select Location" />
+            android:text="Select Location"
+            android:textColor="@color/colorGrey"/>
 
 
     </LinearLayout>
