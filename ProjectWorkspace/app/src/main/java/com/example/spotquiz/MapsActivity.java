@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.spotquiz.pojo.Quiz;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
@@ -76,7 +77,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
     // A default location and default zoom to use when location permission is
     // not granted.
-    private final LatLng mDefaultLocation = new LatLng(44.640874, -63.578470);
+    private final LatLng mDefaultLocation = new LatLng(44.6425439, -63.5744537);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
@@ -91,6 +92,8 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
     private Button selectLocation;
     private QuizLocation quizLocation;
+
+    private Quiz q;
 
 
     @Override
@@ -173,13 +176,13 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng Dalhousie = new LatLng(44.6425439, -63.5744537);
+        //mMap.addMarker(new MarkerOptions().position(Dalhousie).title("Marker in Dalhousie university"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(Dalhousie));
 
         // Enable the zoom controls for the map
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
+        getBuildingSuggestions();
         // Prompt the user for permission.
         getLocationPermission();
     }
@@ -242,11 +245,10 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                             Double lon = -63.5962449;
                             LatLng l = new LatLng(lat,lon);
                             mLikelyPlaceLatLngs[count-1] = l;
-                            try {
-                                getCurrentPlaceSuggestions();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+
+
+                                getBuildingSuggestions();
+
 
 
                             // COMMENTED OUT UNTIL WE DEFINE THE METHOD
@@ -263,26 +265,26 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                 });
     }
 
-    private void getCurrentPlaceSuggestions() throws JSONException {
+    private void getBuildingSuggestions()   {
         int count=0;
-        mLikelyPlaceNames = new String[count];
-        mLikelyPlaceAddresses = new String[count];
-        mLikelyPlaceAttributions = new String[count];
-        mLikelyPlaceLatLngs = new LatLng[count];
-        String json =  getResources().getString(R.string.suggested_buildings);
+        mLikelyPlaceNames = new String[5];
+        mLikelyPlaceAddresses = new String[5];
+        mLikelyPlaceAttributions = new String[5];
+        mLikelyPlaceLatLngs = new LatLng[5];
+        /*String json =  getResources().getString(R.string.suggested_buildings);
         JSONObject jsonObj = new JSONObject(json);
         JSONArray build = jsonObj.getJSONArray("buildings");
         for(int i =0;i<build.length();i++){
             JSONObject b = build.getJSONObject(i);
            Log.e("jsonmap", b.getString("name"));
-            /*mLikelyPlaceNames[i] = b.getString("name");
+            *//*mLikelyPlaceNames[i] = b.getString("name");
             mLikelyPlaceAddresses[i] =  b.getString("name");
             mLikelyPlaceAttributions[i] = null;
             Double lat =  Double.parseDouble(b.getString("lat"));
             Double lon =  Double.parseDouble(b.getString("lon"));
             LatLng l = new LatLng(lat,lon);
-            mLikelyPlaceLatLngs[i] = l;*/
-        }
+            mLikelyPlaceLatLngs[i] = l;*//*
+        }*/
 
         mLikelyPlaceNames[count] = "Tupper building";
         mLikelyPlaceAddresses[count] = "Tupper building";
@@ -296,38 +298,38 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
         mLikelyPlaceNames[count] = "Mona Campbell";
         mLikelyPlaceAddresses[count] = "Mona Campbell";
         mLikelyPlaceAttributions[count] = null;
-        lat = 44.639550;
-        lon = -63.583717;
-        LatLng l = new LatLng(lat,lon);
+        lat = 44.639085;
+        lon = -63.590454;
+         l = new LatLng(lat,lon);
         mLikelyPlaceLatLngs[count] = l;
         count ++;
 
-        mLikelyPlaceNames[count] = "Tupper building";
-        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceNames[count] = "Henry Hicks building";
+        mLikelyPlaceAddresses[count] = "Henry Hicks building";
         mLikelyPlaceAttributions[count] = null;
-        lat = 44.639550;
-        lon = -63.583717;
-        LatLng l = new LatLng(lat,lon);
+        lat = 44.636426;
+        lon = -63.593062;
+         l = new LatLng(lat,lon);
         mLikelyPlaceLatLngs[count] = l;
         count ++;
 
-        mLikelyPlaceNames[count] = "Tupper building";
-        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceNames[count] = "CHEB";
+        mLikelyPlaceAddresses[count] = "CHEB";
         mLikelyPlaceAttributions[count] = null;
-        lat = 44.639550;
-        lon = -63.583717;
-        LatLng l = new LatLng(lat,lon);
+        lat = 44.639364;
+        lon = -63.582893;
+         l = new LatLng(lat,lon);
         mLikelyPlaceLatLngs[count] = l;
         count ++;
 
-        mLikelyPlaceNames[count] = "Tupper building";
-        mLikelyPlaceAddresses[count] = "Tupper building";
+        mLikelyPlaceNames[count] = "Student Union building";
+        mLikelyPlaceAddresses[count] = "Student Union building";
         mLikelyPlaceAttributions[count] = null;
-        lat = 44.639550;
-        lon = -63.583717;
-        LatLng l = new LatLng(lat,lon);
+        lat = 44.636941;
+        lon = -63.588918;
+         l = new LatLng(lat,lon);
         mLikelyPlaceLatLngs[count] = l;
-
+        fillPlacesList();
 
 
     }
@@ -337,7 +339,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
          */
-        try {
+        try {getBuildingSuggestions();
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
 
@@ -413,7 +415,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
                                     .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                         }
 
-                        getCurrentPlaceLikelihoods();
+                        getBuildingSuggestions();
                     }
                 });
             }

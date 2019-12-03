@@ -22,6 +22,7 @@ import com.example.spotquiz.pojo.Quiz;
 import com.example.spotquiz.pojo.QuizLocation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.internal.InternalTokenProvider;
 
 import java.util.ArrayList;
 

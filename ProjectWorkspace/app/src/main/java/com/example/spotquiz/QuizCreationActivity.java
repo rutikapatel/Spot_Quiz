@@ -112,7 +112,22 @@ public class QuizCreationActivity extends AppCompatActivity {
         chooseLocation.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Quiz quiz = new Quiz();
+                quiz.setQuizName(quizName.getText().toString());
+                quiz.setCourseName(course.getText().toString());
+                quiz.setQuizKey(quizKey.getText().toString());
+                quiz.setNoOfQuestions(noOfQuestions.getSelectedItem().toString());
+                quiz.setQuizLocation(selectedLocation);
+                quiz.setQuizDate(quizDate.getText().toString());
+                quiz.setQuizStartTime(quizTime.getText().toString());
+                quiz.setQuizLength(quizLength.getSelectedItem().toString());
+                quiz.setActive(Boolean.FALSE);
+                quiz.setProfessorId(user.getUid());
+
+
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("quiz",quiz);
                 startActivity(intent);
             }
         });
